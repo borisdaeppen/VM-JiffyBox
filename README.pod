@@ -1,4 +1,6 @@
-VM-JiffyBox
-===========
+=head1 VM-JiffyBox
 
 Perl API for JiffyBox
+
+B<STILL UNDER DEVELOPMENT!>
+

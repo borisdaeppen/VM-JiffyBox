@@ -1,0 +1,18 @@
+=head1 Some ideas of how the implementation could be like
+
+ use VM::JiffyBox;
+
+ my $secret_token = 'secretbla1234567890';
+ my $box_id       = 'master_box123';
+
+ my $vm = VM::JiffyBox->new($secret_token);
+
+ my $box   = $vm->get_box   ( $box_id );
+ my $box2  = $vm->create_box();
+ my @boxes = $vm->get_boxes();
+
+ $box->stop();
+ $box->delete();
+
+ $box->set_vm( $vm );
+

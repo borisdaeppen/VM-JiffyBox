@@ -1,12 +1,12 @@
 =head1 Needed URLs
 
- Details of a JiffyBox
+Details of a JiffyBox
 
  Verb: GET URL: /jiffyBoxes/<box_id>
  # curl https://api.jiffybox.de/<token>/v1.0/jiffyBoxes/<box_id>
 
 
- new Jiffybox
+new Jiffybox
 
  Verb: POST URL: /jiffyBoxes
  # curl -d <parameter> https://api.jiffybox.de/<token>/v1.0/jiffyBoxes
@@ -23,8 +23,7 @@
  use_sshkey
  metadata
 
-
- start/stop JiffyBox
+start/stop JiffyBox
 
  Verb: PUT URL: /jiffyBoxes/<box_id>
  # curl -X PUT -d <parameter> https://api.jiffybox.de/<token>/v1.0/jiffyBoxes/<box_id>
@@ -36,8 +35,8 @@
  planid   - required if THAW 
  metadata
 
-
- delete JiffyBox
+delete JiffyBox
 
  DELETE URL:/jiffyBoxes/<Box-ID>
  curl -X DELETE https://api.jiffybox.de/<token>/v1.0/jiffyBoxes/<id>
+

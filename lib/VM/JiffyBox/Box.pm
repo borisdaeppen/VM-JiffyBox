@@ -1,21 +1,29 @@
-package VM::JiffyBox;
+package VM::JiffyBox::Box;
 
 use strict;
 use warnings;
 
 use Moo;
 
-has token => (is => 'rw');
+has id => (is => 'rw');
 
-sub get_id_from_name {
+sub get_backup_id {
     my $self = shift;
 }
 
-sub get_vm {
+sub get_details {
     my $self = shift;
 }
 
-sub create_vm {
+sub start {
+    my $self = shift;
+}
+
+sub stop {
+    my $self = shift;
+}
+
+sub delete {
     my $self = shift;
 }
 
@@ -27,7 +35,7 @@ __END__
 
 =head1 NAME
 
-VM::JiffyBox
+VM::JiffyBox::Box
 
 =head1 SYNOPSIS
 
@@ -53,8 +61,12 @@ VM::JiffyBox
 
 =head1 METHODS
 
-=head2 get_id_from_name($box_name)
+=head2 get_backup_id()
 
-=head2 get_vm($box_id)
+=head2 get_details()
 
-=head2 create_vm($backup_id)
+=head2 start()
+
+=head2 stop()
+
+=head2 delete()

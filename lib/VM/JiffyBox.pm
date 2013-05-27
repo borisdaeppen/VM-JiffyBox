@@ -26,9 +26,16 @@ sub create_vm {
 
 1;
 
+# ABSTRACT: OO-API for JiffyBox Virtual Machine
+
 __END__
 
 =encoding utf8
+
+=head1 PLEASE NOTE
+
+This module ist still under heavy development and a B<TRIAL> version.
+We do not recommend to test or even use it.
 
 =head1 NAME
 

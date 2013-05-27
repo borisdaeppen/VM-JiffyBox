@@ -1,11 +1,10 @@
 package VM::JiffyBox;
 
-use strict;
-use warnings;
-
 use Moo;
 
-has token => (is => 'rw');
+use VM::JiffyBox::Box;
+
+has token => (is => 'ro');
 
 sub get_id_from_name {
     my $self = shift;
@@ -13,6 +12,12 @@ sub get_id_from_name {
 
 sub get_vm {
     my $self = shift;
+    my $box_id = shift;
+
+    my $box = VM::JiffyBox::Box->new(id => $box_id);
+    $box->hypervisor($self);
+
+    return $box;
 }
 
 sub create_vm {

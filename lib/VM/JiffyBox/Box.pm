@@ -1,11 +1,9 @@
 package VM::JiffyBox::Box;
 
-use strict;
-use warnings;
-
 use Moo;
 
-has id => (is => 'rw');
+has id => (is => 'ro');
+has hypervisor => (is => 'rw');
 
 sub get_backup_id {
     my $self = shift;

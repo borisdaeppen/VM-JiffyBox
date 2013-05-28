@@ -4,7 +4,8 @@ use Moo;
 
 use VM::JiffyBox::Box;
 
-has token => (is => 'ro');
+has token => (is => 'ro', required => 1);
+has version => (is => 'ro', default => 'v1.0');
 
 sub get_id_from_name {
     my $self = shift;

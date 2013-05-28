@@ -1,7 +1,7 @@
 use VM::JiffyBox;
 
 my $jiffy = VM::JiffyBox->new(token => 'MyToken');
-my $box = $jiffy->get_vm('MyBoxID');
+my $box = $jiffy->get_vm();
 
 print "< JIFFY >\n";
 print $jiffy->token . "\n";

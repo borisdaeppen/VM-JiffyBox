@@ -1,33 +1,31 @@
-package VM::JiffyBox;
+package VM::JiffyBox::Box;
 
 use Moo;
 
-use VM::JiffyBox::Box;
+has id => (is => 'ro');
+has hypervisor => (is => 'rw');
 
-has token => (is => 'ro', required => 1);
-has version => (is => 'ro', default => 'v1.0');
-
-sub get_id_from_name {
+sub get_backup_id {
     my $self = shift;
 }
 
-sub get_vm {
+sub get_details {
     my $self = shift;
-    my $box_id = shift;
-
-    my $box = VM::JiffyBox::Box->new(id => $box_id);
-    $box->hypervisor($self);
-
-    return $box;
 }
 
-sub create_vm {
+sub start {
+    my $self = shift;
+}
+
+sub stop {
+    my $self = shift;
+}
+
+sub delete {
     my $self = shift;
 }
 
 1;
-
-# ABSTRACT: OO-API for JiffyBox Virtual Machine
 
 __END__
 
@@ -40,7 +38,7 @@ We do not recommend to test or even use it.
 
 =head1 NAME
 
-VM::JiffyBox
+VM::JiffyBox::Box
 
 =head1 SYNOPSIS
 
@@ -66,8 +64,12 @@ VM::JiffyBox
 
 =head1 METHODS
 
-=head2 get_id_from_name($box_name)
+=head2 get_backup_id()
 
-=head2 get_vm($box_id)
+=head2 get_details()
 
-=head2 create_vm($backup_id)
+=head2 start()
+
+=head2 stop()
+
+=head2 delete()

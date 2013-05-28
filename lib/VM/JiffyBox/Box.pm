@@ -2,7 +2,7 @@ package VM::JiffyBox::Box;
 
 use Moo;
 
-has id => (is => 'ro', required => 1);
+has id => (is => 'ro');
 has hypervisor => (is => 'rw');
 
 sub get_backup_id {

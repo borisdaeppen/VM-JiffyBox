@@ -1,6 +1,8 @@
 Revision history for VM-JiffyBox
  
 {{$NEXT}}
+
+0.002     2013-05-29 13:58:02 Europe/Berlin
           (TRIAL) Integreate Dist::Zilla with most popular plugins
 
 0.001     2013-05-27 16:44:00 Europe/Berlin

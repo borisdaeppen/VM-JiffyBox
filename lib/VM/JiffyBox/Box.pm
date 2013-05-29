@@ -1,5 +1,7 @@
 package VM::JiffyBox::Box;
 
+# ABSTRACT: Representation of a Virtual Machine in JiffyBox
+
 use Moo;
 
 has id => (is => 'ro');
@@ -34,11 +36,7 @@ __END__
 =head1 PLEASE NOTE
 
 This module ist still under heavy development and a B<TRIAL> version.
-We do not recommend to test or even use it.
-
-=head1 NAME
-
-VM::JiffyBox::Box
+We do not recommend to use or even test it.
 
 =head1 SYNOPSIS
 
@@ -60,8 +58,6 @@ VM::JiffyBox::Box
 
  1;
 
-=head1 DESCRIPTION
-
 =head1 METHODS
 
 =head2 get_backup_id()
@@ -73,3 +69,12 @@ VM::JiffyBox::Box
 =head2 stop()
 
 =head2 delete()
+
+=head1 SEE ALSO
+
+=over
+
+=item * L<https://github.com/tim-schwarz/VM-JiffyBox>
+
+=back
+

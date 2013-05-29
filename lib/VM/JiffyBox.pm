@@ -1,5 +1,8 @@
 package VM::JiffyBox;
 
+# The line below is recognised by Dist::Zilla and taken for CPAN packaging
+# ABSTRACT: OO-API for JiffyBox Virtual Machine
+
 use Moo;
 
 use VM::JiffyBox::Box;
@@ -27,8 +30,6 @@ sub create_vm {
 
 1;
 
-# ABSTRACT: OO-API for JiffyBox Virtual Machine
-
 __END__
 
 =encoding utf8
@@ -36,11 +37,7 @@ __END__
 =head1 PLEASE NOTE
 
 This module ist still under heavy development and a B<TRIAL> version.
-We do not recommend to test or even use it.
-
-=head1 NAME
-
-VM::JiffyBox
+We do not recommend to use or even test it.
 
 =head1 SYNOPSIS
 
@@ -62,8 +59,6 @@ VM::JiffyBox
 
  1;
 
-=head1 DESCRIPTION
-
 =head1 METHODS
 
 =head2 get_id_from_name($box_name)
@@ -71,3 +66,12 @@ VM::JiffyBox
 =head2 get_vm($box_id)
 
 =head2 create_vm($backup_id)
+
+=head1 SEE ALSO
+
+=over
+
+=item * L<https://github.com/tim-schwarz/VM-JiffyBox>
+
+=back
+

@@ -1,0 +1,8 @@
+Revision history for VM-JiffyBox
+ 
+{{$NEXT}}
+          (TRIAL) Integreate Dist::Zilla with most popular plugins
+
+0.001     2013-05-27 16:44:00 Europe/Berlin
+          (TRIAL) Release some skeleton, just to be visible on CPAN
+

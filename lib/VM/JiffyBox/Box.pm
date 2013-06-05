@@ -3,6 +3,8 @@ package VM::JiffyBox::Box;
 # ABSTRACT: Representation of a Virtual Machine in JiffyBox
 
 use Moo;
+use JSON;
+use LWP::UserAgent;
 
 has id => (is => 'ro');
 has hypervisor => (is => 'rw');
@@ -13,6 +15,26 @@ sub get_backup_id {
 
 sub get_details {
     my $self = shift;
+
+    my $token = $self->{hypervisor}->token;
+    my $version = $self->{hypervisor}->version; 
+    my $test_mode = $self->{hypervisor}->test_mode;
+    my $id = $self->id;
+        
+    my $url = 'https://api.jiffybox.de/' . $token . '/' . $version . '/jiffyBoxes/' . $id;
+    
+    if ($test_mode) {
+        return $url;
+    } else {
+        my $ua = LWP::UserAgent->new();
+        
+        my $details = $ua->get($url);    
+        if ($details->is_success) {
+            return from_json($details->decoded_content);
+        } else {
+            return "FAIL";
+        }
+    }
 }
 
 sub start {

@@ -4,11 +4,14 @@ package VM::JiffyBox;
 # ABSTRACT: OO-API for JiffyBox Virtual Machine
 
 use Moo;
+use JSON;
+use LWP::UserAgent;
 
 use VM::JiffyBox::Box;
 
 has token => (is => 'ro', required => 1);
 has version => (is => 'ro', default => 'v1.0');
+has test_mode => (is => 'ro');
 
 sub get_id_from_name {
     my $self = shift;

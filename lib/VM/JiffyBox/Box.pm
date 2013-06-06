@@ -6,9 +6,10 @@ use Moo;
 use JSON;
 use LWP::UserAgent;
 
-has id => (is => 'ro');
+has id         => (is => 'ro');
 has hypervisor => (is => 'rw');
 
+# TODO
 sub get_backup_id {
     my $self = shift;
 }
@@ -16,35 +17,51 @@ sub get_backup_id {
 sub get_details {
     my $self = shift;
 
-    my $token = $self->{hypervisor}->token;
-    my $version = $self->{hypervisor}->version; 
+    my $id        = $self->id;
+    my $token     = $self->{hypervisor}->token;
+    my $version   = $self->{hypervisor}->version; 
     my $test_mode = $self->{hypervisor}->test_mode;
-    my $id = $self->id;
         
-    my $url = 'https://api.jiffybox.de/' . $token . '/' . $version . '/jiffyBoxes/' . $id;
+    my $url = 'https://api.jiffybox.de/'
+                . $token
+                . '/'
+                . $version
+                . '/jiffyBoxes/'
+                . $id;
     
     if ($test_mode) {
+
+        # if in test_mode we don't do any real request, but just return
+        # the plain URL
         return $url;
-    } else {
+
+    }
+    else {
         my $ua = LWP::UserAgent->new();
         
+        # do HTTP-request to API
         my $details = $ua->get($url);    
+
+        # check result
         if ($details->is_success) {
             return from_json($details->decoded_content);
         } else {
-            return "FAIL";
+            return 0;
         }
     }
 }
 
+# TODO
 sub start {
     my $self = shift;
 }
 
+# TODO
 sub stop {
     my $self = shift;
 }
 
+# TODO
 sub delete {
     my $self = shift;
 }

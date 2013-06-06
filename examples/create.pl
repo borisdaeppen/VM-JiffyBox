@@ -1,6 +1,9 @@
 use VM::JiffyBox;
 use Data::Dumper;
 
+# script musst be called like this:
+#     ./script.pl $AUTH_TOKEN $BOX_ID
+
 unless ( $ARGV[0] ) {
     print "Auth-Token as first argument needed!\n";
     exit 1;
@@ -10,37 +13,25 @@ unless ( $ARGV[1] ) {
     exit 1;
 }
 
+# create a hypervisor with test_mode on
 my $jiffy = VM::JiffyBox->new(token => $ARGV[0], test_mode => 1);
-print "VM::JiffyBox\n";
-if ($jiffy->test_mode) {
-   print "Test-Mode: ON\n";
-} else {
-   print "Test-Mode: OFF\n" 
-}
-print "Token: " . $jiffy->token . "\n";
-print "Version: " . $jiffy->version . "\n";
 
-print "\n";
-
+# get a specific box
 my $box = $jiffy->get_vm($ARGV[1]);
-print "VM::JiffyBox::Box\n";
-if ($box->{hypervisor}->test_mode) {
-   print "Test-Mode: ON\n";
-} else {
-   print "Test-Mode: OFF\n" 
-}
-print "Token: " . $box->{hypervisor}->token . "\n";
-print "Version: " . $box->{hypervisor}->version . "\n";
-print "Box-ID: " . $box->id . "\n";
 
-print "\n";
+# do a request to this box
+# since we have test_mode enabled it will just return the URL for the API
+my $req_url = $box->get_details();
 
-print "URL:\n";
-my $box_details = $box->get_details();
-print Dumper($box_details) . "\n";
+# we print out the URL
+print "URL for request is:\n\t$req_url\n\n";
 
-print "LIVE:\n";
+# we change the status of the box and disable test_mode
 $jiffy->test_mode = 0;
-my $box_details2 = $box->get_details();
-print Dumper($box_details2) . "\n";
+
+# do the same request again, this time live!
+my $box_details = $box->get_details();
+
+print "Result from request is:\n";
+print Dumper($box_details) . "\n";
 

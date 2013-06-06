@@ -9,24 +9,28 @@ use LWP::UserAgent;
 
 use VM::JiffyBox::Box;
 
-has token => (is => 'ro', required => 1);
-has version => (is => 'ro', default => 'v1.0');
+has token     => (is => 'ro', required => 1);
+has version   => (is => 'ro', default => 'v1.0');
 has test_mode => (is => 'ro');
 
+# TODO
 sub get_id_from_name {
     my $self = shift;
 }
 
 sub get_vm {
-    my $self = shift;
+    my $self   = shift;
     my $box_id = shift;
 
     my $box = VM::JiffyBox::Box->new(id => $box_id);
+
+    # tell the VM which hypervisor it belongs to
     $box->hypervisor($self);
 
     return $box;
 }
 
+# TODO
 sub create_vm {
     my $self = shift;
 }

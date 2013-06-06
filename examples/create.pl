@@ -1,15 +1,17 @@
 use VM::JiffyBox;
-use Data::Dumper;
+use Text::ASCIITable;
+use feature qw(say);
+#use Data::Dumper;
 
 # script musst be called like this:
 #     ./script.pl $AUTH_TOKEN $BOX_ID
 
 unless ( $ARGV[0] ) {
-    print "Auth-Token as first argument needed!\n";
+    say 'Auth-Token as first argument needed!';
     exit 1;
 }
 unless ( $ARGV[1] ) {
-    print "Box-ID as second argument needed!\n";
+    say 'Box-ID as second argument needed!';
     exit 1;
 }
 
@@ -24,7 +26,7 @@ my $box = $jiffy->get_vm($ARGV[1]);
 my $req_url = $box->get_details();
 
 # we print out the URL
-print "URL for request is:\n\t$req_url\n\n";
+say "\n$req_url\n";
 
 # we change the status of the box and disable test_mode
 $jiffy->test_mode = 0;
@@ -32,6 +34,16 @@ $jiffy->test_mode = 0;
 # do the same request again, this time live!
 my $box_details = $box->get_details();
 
-print "Result from request is:\n";
-print Dumper($box_details) . "\n";
+# build a fancy ASCII table out of the result
+$t = Text::ASCIITable->new();
+$t->setCols('Name', 'Public IP', 'Price per Hour', 'OS');
+$t->addRow(
+    $box_details->{result}->{name},
+    $box_details->{result}->{ips}->{public}->[0],
+    $box_details->{result}->{plan}->{pricePerHour},
+    $box_details->{result}->{activeProfile}->{disks}->{xvda}->{name},
+);
+
+# and print the ASCII table
+print $t;
 

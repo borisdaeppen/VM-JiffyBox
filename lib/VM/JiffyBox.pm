@@ -9,9 +9,19 @@ use LWP::UserAgent;
 
 use VM::JiffyBox::Box;
 
-has token     => (is => 'ro', required => 1);
-has version   => (is => 'ro', default => 'v1.0');
-has test_mode => (is => 'ro');
+has domain_name => (is => 'ro', default => 'https://api.jiffybox.de');
+has version     => (is => 'ro', default => 'v1.0');
+has token       => (is => 'ro', required => 1);
+
+has test_mode   => (is => 'ro');
+
+sub base_url {
+    my $self = shift;
+
+    return   $self->domain_name . '/'
+           . $self->token       . '/' 
+           . $self->version     ;
+}
 
 # TODO
 sub get_id_from_name {

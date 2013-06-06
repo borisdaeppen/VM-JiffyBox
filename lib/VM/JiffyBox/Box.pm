@@ -17,25 +17,16 @@ sub get_backup_id {
 sub get_details {
     my $self = shift;
 
-    my $id        = $self->id;
-    my $token     = $self->{hypervisor}->token;
-    my $version   = $self->{hypervisor}->version; 
-    my $test_mode = $self->{hypervisor}->test_mode;
-        
-    my $url = 'https://api.jiffybox.de/'
-                . $token
-                . '/'
-                . $version
-                . '/jiffyBoxes/'
-                . $id;
+    # add request specific stuff to base url
+    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    if ($test_mode) {
+    # if in test_mode we don't do any real request,
+    if ($self->{hypervisor}->test_mode) {
 
-        # if in test_mode we don't do any real request, but just return
-        # the plain URL
+        # but just return the plain URL
         return $url;
-
     }
+    # no test_mode, we do some serious requests
     else {
         my $ua = LWP::UserAgent->new();
         
@@ -44,8 +35,12 @@ sub get_details {
 
         # check result
         if ($details->is_success) {
+
+            # return JSON as a Perl-structure
             return from_json($details->decoded_content);
-        } else {
+
+        }
+        else {
             return 0;
         }
     }

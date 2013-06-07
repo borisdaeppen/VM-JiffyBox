@@ -9,8 +9,8 @@ use LWP::UserAgent;
 
 use VM::JiffyBox::Box;
 
-has domain_name => (is => 'ro', default => 'https://api.jiffybox.de');
-has version     => (is => 'ro', default => 'v1.0');
+has domain_name => (is => 'ro', default => sub {'https://api.jiffybox.de'});
+has version     => (is => 'ro', default => sub {'v1.0'});
 has token       => (is => 'ro', required => 1);
 
 has test_mode   => (is => 'rw');

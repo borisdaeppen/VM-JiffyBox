@@ -2,6 +2,12 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.004     2013-06-06 21:52:59 Europe/Berlin
+          (TRIAL) Dist::Zilla is used more heavily for building dist
+          basic skel of hypervisor implemented (JiffyBox)
+          get_details() is implemented (Box)
+          proper example script for showing usage
+
 0.002     2013-05-29 13:58:02 Europe/Berlin
           (TRIAL) Integreate Dist::Zilla with most popular plugins
 

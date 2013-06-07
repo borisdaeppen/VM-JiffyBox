@@ -9,24 +9,38 @@ use LWP::UserAgent;
 
 use VM::JiffyBox::Box;
 
-has token => (is => 'ro', required => 1);
-has version => (is => 'ro', default => 'v1.0');
-has test_mode => (is => 'ro');
+has domain_name => (is => 'ro', default => 'https://api.jiffybox.de');
+has version     => (is => 'ro', default => 'v1.0');
+has token       => (is => 'ro', required => 1);
 
+has test_mode   => (is => 'ro');
+
+sub base_url {
+    my $self = shift;
+
+    return   $self->domain_name . '/'
+           . $self->token       . '/' 
+           . $self->version     ;
+}
+
+# TODO
 sub get_id_from_name {
     my $self = shift;
 }
 
 sub get_vm {
-    my $self = shift;
+    my $self   = shift;
     my $box_id = shift;
 
     my $box = VM::JiffyBox::Box->new(id => $box_id);
+
+    # tell the VM which hypervisor it belongs to
     $box->hypervisor($self);
 
     return $box;
 }
 
+# TODO
 sub create_vm {
     my $self = shift;
 }
@@ -39,36 +53,13 @@ __END__
 
 =head1 PLEASE NOTE
 
-This module ist still under heavy development and a B<TRIAL> version.
-We do not recommend to use or even test it.
+This module ist still under heavy development and a B<TRIAL> release.
+We do not recommend to use it.
 
 =head1 SYNOPSIS
 
- use VM::JiffyBox;
-
- my $jiffy = VM::JiffyBox->new($token);
-
- my $box_id = $jiffy->get_id_from_name($box_name);
- my $box    = $jiffy->get_vm($box_id);
-
- my $backup_id = $box->get_backup_id();
- my $new_box   = $jiffy->create_vm($backup_id);
- $new_box->start();
-
- my $new_box_details = $new_box->get_details();
-
- $new_box->stop();
- $new_box->delete();
-
- 1;
-
-=head1 METHODS
-
-=head2 get_id_from_name($box_name)
-
-=head2 get_vm($box_id)
-
-=head2 create_vm($backup_id)
+See the C<examples> directory for examples of working code.
+Synopsis will come when first stable release is here.
 
 =head1 SEE ALSO
 

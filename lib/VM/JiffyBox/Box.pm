@@ -6,9 +6,10 @@ use Moo;
 use JSON;
 use LWP::UserAgent;
 
-has id => (is => 'ro');
+has id         => (is => 'ro');
 has hypervisor => (is => 'rw');
 
+# TODO
 sub get_backup_id {
     my $self = shift;
 }
@@ -16,35 +17,46 @@ sub get_backup_id {
 sub get_details {
     my $self = shift;
 
-    my $token = $self->{hypervisor}->token;
-    my $version = $self->{hypervisor}->version; 
-    my $test_mode = $self->{hypervisor}->test_mode;
-    my $id = $self->id;
-        
-    my $url = 'https://api.jiffybox.de/' . $token . '/' . $version . '/jiffyBoxes/' . $id;
+    # add request specific stuff to base url
+    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    if ($test_mode) {
+    # if in test_mode we don't do any real request,
+    if ($self->{hypervisor}->test_mode) {
+
+        # but just return the plain URL
         return $url;
-    } else {
+    }
+    # no test_mode, we do some serious requests
+    else {
         my $ua = LWP::UserAgent->new();
         
+        # do HTTP-request to API
         my $details = $ua->get($url);    
+
+        # check result
         if ($details->is_success) {
+
+            # return JSON as a Perl-structure
             return from_json($details->decoded_content);
-        } else {
-            return "FAIL";
+
+        }
+        else {
+            return 0;
         }
     }
 }
 
+# TODO
 sub start {
     my $self = shift;
 }
 
+# TODO
 sub stop {
     my $self = shift;
 }
 
+# TODO
 sub delete {
     my $self = shift;
 }
@@ -57,40 +69,13 @@ __END__
 
 =head1 PLEASE NOTE
 
-This module ist still under heavy development and a B<TRIAL> version.
-We do not recommend to use or even test it.
+This module ist still under heavy development and a B<TRIAL> release.
+We do not recommend to use it.
 
 =head1 SYNOPSIS
 
- use VM::JiffyBox;
-
- my $jiffy = VM::JiffyBox->new($token);
-
- my $box_id = $jiffy->get_id_from_name($box_name);
- my $box    = $jiffy->get_vm($box_id);
-
- my $backup_id = $box->get_backup_id();
- my $new_box   = $jiffy->create_vm($backup_id);
- $new_box->start();
-
- my $new_box_details = $new_box->get_details();
-
- $new_box->stop();
- $new_box->delete();
-
- 1;
-
-=head1 METHODS
-
-=head2 get_backup_id()
-
-=head2 get_details()
-
-=head2 start()
-
-=head2 stop()
-
-=head2 delete()
+See the C<examples> directory for examples of working code.
+Synopsis will come when first stable release is here.
 
 =head1 SEE ALSO
 

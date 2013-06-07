@@ -29,7 +29,7 @@ my $req_url = $box->get_details();
 say "\n$req_url\n";
 
 # we change the status of the box and disable test_mode
-$jiffy->test_mode = 0;
+$jiffy->test_mode(0);
 
 # do the same request again, this time live!
 my $box_details = $box->get_details();

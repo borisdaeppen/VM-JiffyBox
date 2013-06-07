@@ -13,7 +13,7 @@ has domain_name => (is => 'ro', default => 'https://api.jiffybox.de');
 has version     => (is => 'ro', default => 'v1.0');
 has token       => (is => 'ro', required => 1);
 
-has test_mode   => (is => 'ro');
+has test_mode   => (is => 'rw');
 
 sub base_url {
     my $self = shift;

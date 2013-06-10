@@ -23,7 +23,7 @@ my $box = $jiffy->get_vm($ARGV[1]);
 
 # do a request to this box
 # since we have test_mode enabled it will just return the URL for the API
-my $req_url = $box->get_details();
+my $req_url = $box->start();
 
 # we print out the URL
 say "\n$req_url\n";
@@ -32,17 +32,19 @@ say "\n$req_url\n";
 $jiffy->test_mode(0);
 
 # do the same request again, this time live!
-my $box_details = $box->get_details();
+my $box_details = $box->start();
+
+print Dumper($box_details);
 
 # build a fancy ASCII table out of the result
-$t = Text::ASCIITable->new();
-$t->setCols('Name', 'Public IP', 'Price per Hour', 'OS');
-$t->addRow(
-    $box_details->{result}->{name},
-    $box_details->{result}->{ips}->{public}->[0],
-    $box_details->{result}->{plan}->{pricePerHour},
-    $box_details->{result}->{activeProfile}->{disks}->{xvda}->{name}
-);
+#$t = Text::ASCIITable->new();
+#$t->setCols('Name', 'Public IP', 'Price per Hour', 'OS');
+#$t->addRow(
+#    $box_details->{result}->{name},
+#    $box_details->{result}->{ips}->{public}->[0],
+#    $box_details->{result}->{plan}->{pricePerHour},
+#    $box_details->{result}->{activeProfile}->{disks}->{xvda}->{name}
+#);
 
 # and print the ASCII table
-print $t;
+#print $t;

@@ -3,10 +3,13 @@ package VM::JiffyBox::Box;
 # ABSTRACT: Representation of a Virtual Machine in JiffyBox
 
 use Moo;
+use URI;
 use JSON;
 use LWP::UserAgent;
 
-has id         => (is => 'ro');
+my $def = sub {die unless $_[0]};
+
+has id         => (is => 'ro', isa => $def);
 has hypervisor => (is => 'rw');
 
 # TODO
@@ -41,19 +44,47 @@ sub get_details {
 
         }
         else {
-            return 0;
+            return $details->status_line;
         }
     }
 }
 
-# TODO
 sub start {
     my $self = shift;
+    
+    my $url = URI->new($self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id);
+    
+    if ($self->{hypervisor}->test_mode) {
+        return $url;
+    } else {
+        my $ua = LWP::UserAgent->new();
+        my $details = $ua->put($url, {status => 'START'});
+        
+        if ($details->is_success) {
+            return from_json($details->decoded_content);
+        } else {
+            return $details->status_line;
+        }
+    }
 }
 
-# TODO
 sub stop {
     my $self = shift;
+    
+    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
+    
+    if ($self->{hypervisor}->test_mode) {
+        return $url;
+    } else {
+        my $ua = LWP::UserAgent->new();
+        my $details = $ua->put($url, {status => 'START'});
+        
+        if ($details->is_success) {
+            return from_json($details->decoded_content);
+        } else {
+            return $details->status_line;
+        }
+    }
 }
 
 # TODO

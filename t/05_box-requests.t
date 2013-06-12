@@ -17,6 +17,8 @@ my $box_id = 'BOX_ID';
 # here is a list of all the requests to check
 my %requests = (
                 get_details => "$base_url/jiffyBoxes/$box_id",
+                start => "$base_url/jiffyBoxes/$box_id",
+                stop => "$base_url/jiffyBoxes/$box_id",
                );
 
 ##############

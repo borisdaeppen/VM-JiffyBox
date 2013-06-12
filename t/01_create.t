@@ -17,10 +17,7 @@ is($jiffy->token, $token, 'Check Token');
 
 can_ok($jiffy, 'get_vm'); 
 
-TODO: {
-    local $TODO = "Die on missing ID has to be implemented";
-    dies_ok{$jiffy->get_vm()} 'Die if no ID';
-}
+dies_ok{$jiffy->get_vm()} 'Die if no ID';
 
 my $box_id = 'MyBoxID';
 my $box = $jiffy->get_vm($box_id);

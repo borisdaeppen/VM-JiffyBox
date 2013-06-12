@@ -36,7 +36,7 @@ sub get_vm {
 
     my $box = VM::JiffyBox::Box->new(id => $box_id);
 
-    # tell the VM which hypervisor it belongs to
+    # set the hypervisor of the VM
     $box->hypervisor($self);
 
     return $box;

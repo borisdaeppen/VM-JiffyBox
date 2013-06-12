@@ -3,14 +3,16 @@ package VM::JiffyBox::Box;
 # ABSTRACT: Representation of a Virtual Machine in JiffyBox
 
 use Moo;
-use URI;
 use JSON;
 use LWP::UserAgent;
+use HTTP::Request;
 
 my $def = sub {die unless $_[0]};
 
 has id         => (is => 'ro', isa => $def);
 has hypervisor => (is => 'rw');
+
+my $ua = LWP::UserAgent->new();
 
 # TODO
 sub get_backup_id {
@@ -20,30 +22,20 @@ sub get_backup_id {
 sub get_details {
     my $self = shift;
 
-    # add request specific stuff to base url
+    # add method specific stuff to the URL
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    # if in test_mode we don't do any real request,
+    # return the URL if we are using test_mode
     if ($self->{hypervisor}->test_mode) {
-
-        # but just return the plain URL
         return $url;
-    }
-    # no test_mode, we do some serious requests
-    else {
-        my $ua = LWP::UserAgent->new();
-        
-        # do HTTP-request to API
+    } else {
+        # send the request and return the response
         my $details = $ua->get($url);    
 
-        # check result
         if ($details->is_success) {
-
-            # return JSON as a Perl-structure
+            # change the json response to perl structure
             return from_json($details->decoded_content);
-
-        }
-        else {
+        } else {
             return $details->status_line;
         }
     }
@@ -52,13 +44,13 @@ sub get_details {
 sub start {
     my $self = shift;
     
-    my $url = URI->new($self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id);
+    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
     if ($self->{hypervisor}->test_mode) {
         return $url;
     } else {
-        my $ua = LWP::UserAgent->new();
-        my $details = $ua->put($url, {status => 'START'});
+        # send the request with method specific json content
+        my $details = $ua->put($url, Content => to_json({status => 'START'}));
         
         if ($details->is_success) {
             return from_json($details->decoded_content);
@@ -75,9 +67,8 @@ sub stop {
     
     if ($self->{hypervisor}->test_mode) {
         return $url;
-    } else {
-        my $ua = LWP::UserAgent->new();
-        my $details = $ua->put($url, {status => 'START'});
+    } else {   
+        my $details = $ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
         
         if ($details->is_success) {
             return from_json($details->decoded_content);

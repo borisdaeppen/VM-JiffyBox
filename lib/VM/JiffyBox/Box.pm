@@ -5,7 +5,6 @@ package VM::JiffyBox::Box;
 use Moo;
 use JSON;
 use LWP::UserAgent;
-use HTTP::Request;
 
 my $def = sub {die unless $_[0]};
 

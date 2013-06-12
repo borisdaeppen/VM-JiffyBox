@@ -15,9 +15,9 @@ has domain_name => (is => 'ro', isa => $def, default => sub {'https://api.jiffyb
 has version     => (is => 'ro', isa => $def, default => sub {'v1.0'});
 has token       => (is => 'ro', isa => $def, required => 1);
 
-has test_mode   => (is => 'rw');
+has ua          => (is => 'ro', isa => $def, default => sub {LWP::UserAgent->new()});
 
-my $ua = LWP::UserAgent->new();
+has test_mode   => (is => 'rw');
 
 sub base_url {
     my $self = shift;
@@ -35,7 +35,7 @@ sub get_details {
     if ($self->test_mode) {
         return $url;
     } else {
-        my $response = $ua->get($url);
+        my $response = $self->ua->get($url);
 
         if ($response->is_success) {
             return from_json($response->decoded_content);

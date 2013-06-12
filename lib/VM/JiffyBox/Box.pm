@@ -11,8 +11,6 @@ my $def = sub {die unless $_[0]};
 has id         => (is => 'ro', isa => $def);
 has hypervisor => (is => 'rw');
 
-my $ua = LWP::UserAgent->new();
-
 sub get_backups {
     my $self = shift;
     
@@ -21,7 +19,7 @@ sub get_backups {
     if ($self->{hypervisor}->test_mode) {
         return $url;
     } else {
-        my $response = $ua->get($url);
+        my $response = $self->{hypervisor}->ua->get($url);
 
         if ($response->is_success) {
             return from_json($response->decoded_content);
@@ -42,7 +40,7 @@ sub get_details {
         return $url;
     } else {
         # send the request and return the response
-        my $response = $ua->get($url);
+        my $response = $self->{hypervisor}->ua->get($url);
 
         if ($response->is_success) {
             # change the json response to perl structure
@@ -62,7 +60,7 @@ sub start {
         return $url;
     } else {
         # send the request with method specific json content
-        my $response = $ua->put($url, Content => to_json({status => 'START'}));
+        my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'START'}));
         
         if ($response->is_success) {
             return from_json($response->decoded_content);
@@ -80,7 +78,7 @@ sub stop {
     if ($self->{hypervisor}->test_mode) {
         return $url;
     } else {   
-        my $response = $ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
+        my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
         
         if ($response->is_success) {
             return from_json($response->decoded_content);
@@ -98,7 +96,7 @@ sub delete {
     if ($self->{hypervisor}->test_mode) {
         return $url;
     } else {
-        my $response = $ua->delete($url);    
+        my $response = $self->{hypervisor}->ua->delete($url);    
 
         if ($response->is_success) {
             return from_json($response->decoded_content);

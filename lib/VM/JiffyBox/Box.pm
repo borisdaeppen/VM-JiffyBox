@@ -13,14 +13,27 @@ has hypervisor => (is => 'rw');
 
 my $ua = LWP::UserAgent->new();
 
-# TODO
-sub get_backup_id {
+sub get_backups {
     my $self = shift;
+    
+    my $url = $self->{hypervisor}->base_url . '/backups/' . $self->id;
+    
+    if ($self->{hypervisor}->test_mode) {
+        return $url;
+    } else {
+        my $response = $ua->get($url);
+
+        if ($response->is_success) {
+            return from_json($response->decoded_content);
+        } else {
+            return $response->status_line;
+        }
+    }
 }
 
 sub get_details {
     my $self = shift;
-
+    
     # add method specific stuff to the URL
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
@@ -29,13 +42,13 @@ sub get_details {
         return $url;
     } else {
         # send the request and return the response
-        my $details = $ua->get($url);    
+        my $response = $ua->get($url);
 
-        if ($details->is_success) {
+        if ($response->is_success) {
             # change the json response to perl structure
-            return from_json($details->decoded_content);
+            return from_json($response->decoded_content);
         } else {
-            return $details->status_line;
+            return $response->status_line;
         }
     }
 }
@@ -49,12 +62,12 @@ sub start {
         return $url;
     } else {
         # send the request with method specific json content
-        my $details = $ua->put($url, Content => to_json({status => 'START'}));
+        my $response = $ua->put($url, Content => to_json({status => 'START'}));
         
-        if ($details->is_success) {
-            return from_json($details->decoded_content);
+        if ($response->is_success) {
+            return from_json($response->decoded_content);
         } else {
-            return $details->status_line;
+            return $response->status_line;
         }
     }
 }
@@ -67,19 +80,32 @@ sub stop {
     if ($self->{hypervisor}->test_mode) {
         return $url;
     } else {   
-        my $details = $ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
+        my $response = $ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
         
-        if ($details->is_success) {
-            return from_json($details->decoded_content);
+        if ($response->is_success) {
+            return from_json($response->decoded_content);
         } else {
-            return $details->status_line;
+            return $response->status_line;
         }
     }
 }
 
-# TODO
 sub delete {
     my $self = shift;
+    
+    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
+    
+    if ($self->{hypervisor}->test_mode) {
+        return $url;
+    } else {
+        my $response = $ua->delete($url);    
+
+        if ($response->is_success) {
+            return from_json($response->decoded_content);
+        } else {
+            return $response->status_line;
+        }
+    }
 }
 
 1;

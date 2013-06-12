@@ -17,6 +17,8 @@ has token       => (is => 'ro', isa => $def, required => 1);
 
 has test_mode   => (is => 'rw');
 
+my $ua = LWP::UserAgent->new();
+
 sub base_url {
     my $self = shift;
 
@@ -25,9 +27,37 @@ sub base_url {
            . $self->version     ;
 }
 
-# TODO
+sub get_details {
+    my $self = shift;
+    
+    my $url = $self->base_url . '/jiffyBoxes';
+    
+    if ($self->test_mode) {
+        return $url;
+    } else {
+        my $response = $ua->get($url);
+
+        if ($response->is_success) {
+            return from_json($response->decoded_content);
+        } else {
+            return $response->status_line;
+        }
+    }
+}
+
 sub get_id_from_name {
     my $self = shift;
+    my $box_name = shift || '';
+    
+    my $details = $self->get_details;
+    
+    if ($self->test_mode) {
+        return $details;
+    } else {
+        foreach my $box (values $details->{result}) {
+            return $box->{id} if ($box->{name} eq $box_name);
+        }
+    }
 }
 
 sub get_vm {

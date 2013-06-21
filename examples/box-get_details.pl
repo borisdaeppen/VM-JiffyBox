@@ -36,10 +36,11 @@ my $box_details = $box->get_details();
 
 # build a fancy ASCII table out of the result
 $t = Text::ASCIITable->new();
-$t->setCols('Name', 'Public IP', 'Price per Hour', 'OS');
+$t->setCols('Name', 'Public IP', 'Plan ID', 'Price per Hour', 'OS');
 $t->addRow(
     $box_details->{result}->{name},
     $box_details->{result}->{ips}->{public}->[0],
+    $box_details->{result}->{plan}->{id},
     $box_details->{result}->{plan}->{pricePerHour},
     $box_details->{result}->{activeProfile}->{disks}->{xvda}->{name}
 );

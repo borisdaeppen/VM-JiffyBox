@@ -72,9 +72,25 @@ sub get_vm {
     return $box;
 }
 
-# TODO
 sub create_vm {
     my $self = shift;
+    my $name = shift || '';
+    my $plan_id = shift || 0;
+    my $backup_id = shift || 0;
+    
+    my $url = $self->base_url . '/jiffyBoxes';
+    
+    if ($self->test_mode) {
+        return $url;
+    } else {
+        my $response = $self->ua->post($url, Content => to_json({name => $name, planid => $plan_id, backupid => $backup_id}));
+
+        if ($response->is_success) {
+            return from_json($response->decoded_content);
+        } else {
+            return $response->status_line;
+        }
+    }
 }
 
 1;

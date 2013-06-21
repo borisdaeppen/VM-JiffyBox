@@ -23,5 +23,5 @@ say "\n$url\n";
 
 $jiffy->test_mode(0);
 
-my $url = $jiffy->create_vm($ARGV[1], $ARGV[2], $ARGV[3]);
+my $response = $jiffy->create_vm($ARGV[1], $ARGV[2], $ARGV[3]);
 print Dumper($response);

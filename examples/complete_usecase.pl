@@ -39,5 +39,20 @@ say "backup_id: $backup_id";
 say "plan_id: $plan_id";
 
 # create a clone of the VM
-# ...
+my $clone_box  = $jiffy->create_vm( "$box_name-B", $plan_id, $backup_id );
+
+# abort if create failed
+unless ($clone_box) {
+    # FAIL
+    die $jiffy->answer->{messages}->[0]->{message};
+}
+
+# wait for the clone to be ready
+do {
+    say "waiting for clone to get READY";
+    sleep 15;
+} while (not $clone_box->get_details->{result}->{status} eq 'READY');
+
+# start the clone
+$clone_box->start();
 

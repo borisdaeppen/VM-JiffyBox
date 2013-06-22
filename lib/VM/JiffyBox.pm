@@ -33,16 +33,17 @@ sub get_details {
     
     my $url = $self->base_url . '/jiffyBoxes';
     
-    if ($self->test_mode) {
-        return $url;
-    } else {
-        my $response = $self->ua->get($url);
 
-        if ($response->is_success) {
-            return from_json($response->decoded_content);
-        } else {
-            return $response->status_line;
-        }
+    # EXIT
+    return $url if ($self->test_mode);
+    
+    my $response = $self->ua->get($url);
+
+    if ($response->is_success) {
+        return from_json($response->decoded_content);
+    }
+    else {
+        return $response->status_line;
     }
 }
 
@@ -52,12 +53,11 @@ sub get_id_from_name {
     
     my $details = $self->get_details;
     
-    if ($self->test_mode) {
-        return $details;
-    } else {
-        foreach my $box (values $details->{result}) {
-            return $box->{id} if ($box->{name} eq $box_name);
-        }
+    # EXIT
+    return $details if ($self->test_mode);
+    
+    foreach my $box (values $details->{result}) {
+        return $box->{id} if ($box->{name} eq $box_name);
     }
 }
 
@@ -81,33 +81,33 @@ sub create_vm {
     
     my $url = $self->base_url . '/jiffyBoxes';
     
-    if ($self->test_mode) {
-        return $url;
-    } else {
-        my $response = $self->ua->post($url, Content => to_json({name => $name, planid => $plan_id, backupid => $backup_id}));
+    # EXIT
+    return $url if ($self->test_mode);
+    
+    my $response = $self->ua->post($url, Content => to_json({name => $name, planid => $plan_id, backupid => $backup_id}));
 
-        if ($response->is_success) {
-            $self->answer ( from_json($response->decoded_content) );
+    if ($response->is_success) {
+        $self->answer ( from_json($response->decoded_content) );
 
-            # TODO: should check the array for more messages
-            if (exists $self->answer->{messages}->[0]->{type}
-                        and
-                $self->answer->{messages}->[0]->{type} eq 'error'
-               ) {
-                return 0;
-            }
-
-            my $box_id = $self->answer->{result}->{id};
-            my $box = VM::JiffyBox::Box->new(id => $box_id);
-
-            # set the hypervisor of the VM
-            $box->hypervisor($self);
-
-            return $box;
-        } else {
-            $self->answer = $response->status_line;
+        # TODO: should check the array for more messages
+        if (exists $self->answer->{messages}->[0]->{type}
+                    and
+            $self->answer->{messages}->[0]->{type} eq 'error'
+           ) {
             return 0;
         }
+
+        my $box_id = $self->answer->{result}->{id};
+        my $box = VM::JiffyBox::Box->new(id => $box_id);
+
+        # set the hypervisor of the VM
+        $box->hypervisor($self);
+
+        return $box;
+    }
+    else {
+        $self->answer = $response->status_line;
+        return 0;
     }
 }
 

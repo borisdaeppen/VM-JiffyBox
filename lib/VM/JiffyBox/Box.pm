@@ -16,16 +16,16 @@ sub get_backups {
     
     my $url = $self->{hypervisor}->base_url . '/backups/' . $self->id;
     
-    if ($self->{hypervisor}->test_mode) {
-        return $url;
-    } else {
-        my $response = $self->{hypervisor}->ua->get($url);
+    # EXIT
+    return $url if ($self->{hypervisor}->test_mode);
+    
+    my $response = $self->{hypervisor}->ua->get($url);
 
-        if ($response->is_success) {
-            return from_json($response->decoded_content);
-        } else {
-            return $response->status_line;
-        }
+    if ($response->is_success) {
+        return from_json($response->decoded_content);
+    }
+    else {
+        return $response->status_line;
     }
 }
 
@@ -36,18 +36,17 @@ sub get_details {
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
     # return the URL if we are using test_mode
-    if ($self->{hypervisor}->test_mode) {
-        return $url;
-    } else {
-        # send the request and return the response
-        my $response = $self->{hypervisor}->ua->get($url);
+    return $url if ($self->{hypervisor}->test_mode);
+    
+    # send the request and return the response
+    my $response = $self->{hypervisor}->ua->get($url);
 
-        if ($response->is_success) {
-            # change the json response to perl structure
-            return from_json($response->decoded_content);
-        } else {
-            return $response->status_line;
-        }
+    if ($response->is_success) {
+        # change the json response to perl structure
+        return from_json($response->decoded_content);
+    }
+    else {
+        return $response->status_line;
     }
 }
 
@@ -56,17 +55,16 @@ sub start {
     
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    if ($self->{hypervisor}->test_mode) {
-        return $url;
+    # EXIT
+    return $url if ($self->{hypervisor}->test_mode);
+    
+    # send the request with method specific json content
+    my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'START'}));
+    
+    if ($response->is_success) {
+        return from_json($response->decoded_content);
     } else {
-        # send the request with method specific json content
-        my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'START'}));
-        
-        if ($response->is_success) {
-            return from_json($response->decoded_content);
-        } else {
-            return $response->status_line;
-        }
+        return $response->status_line;
     }
 }
 
@@ -75,16 +73,15 @@ sub stop {
     
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    if ($self->{hypervisor}->test_mode) {
-        return $url;
-    } else {   
-        my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
+    # EXIT
+    return $url if ($self->{hypervisor}->test_mode);
+    
+    my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
         
-        if ($response->is_success) {
-            return from_json($response->decoded_content);
-        } else {
-            return $response->status_line;
-        }
+    if ($response->is_success) {
+        return from_json($response->decoded_content);
+    } else {
+        return $response->status_line;
     }
 }
 
@@ -93,16 +90,15 @@ sub delete {
     
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    if ($self->{hypervisor}->test_mode) {
-        return $url;
-    } else {
-        my $response = $self->{hypervisor}->ua->delete($url);    
+    # EXIT
+    return $url if ($self->{hypervisor}->test_mode);
+    
+    my $response = $self->{hypervisor}->ua->delete($url);    
 
-        if ($response->is_success) {
-            return from_json($response->decoded_content);
-        } else {
-            return $response->status_line;
-        }
+    if ($response->is_success) {
+        return from_json($response->decoded_content);
+    } else {
+        return $response->status_line;
     }
 }
 

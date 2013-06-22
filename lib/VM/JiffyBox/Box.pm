@@ -4,12 +4,19 @@ package VM::JiffyBox::Box;
 
 use Moo;
 use JSON;
-use LWP::UserAgent;
+use LWP::UserAgent; # needed?
 
 my $def = sub {die unless $_[0]};
 
 has id         => (is => 'ro', isa => $def);
 has hypervisor => (is => 'rw');
+
+has last          => (is => 'rw');
+has backup_cache  => (is => 'rw');
+has details_cache => (is => 'rw');
+has start_cache   => (is => 'rw');
+has stop_cache    => (is => 'rw');
+has delete_cache  => (is => 'rw');
 
 sub get_backups {
     my $self = shift;
@@ -23,10 +30,17 @@ sub get_backups {
 
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        return $response->status_line;
+
+        $self->last ( $response->status_line );
+        return 0;
     }
 
-    return from_json($response->decoded_content);
+    my $backup_info = from_json($response->decoded_content);
+
+    $self->last         ($backup_info);
+    $self->backup_cache ($backup_info);
+    return               $backup_info ;
+
 }
 
 sub get_details {
@@ -44,11 +58,16 @@ sub get_details {
 
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        # change the json response to perl structure
-        return $response->status_line;
+
+        $self->last ( $response->status_line );
+        return 0;
     }
 
-    return from_json($response->decoded_content);
+    my $details = from_json($response->decoded_content);
+
+    $self->last          ($details);
+    $self->details_cache ($details);
+    return                $details ;
 }
 
 sub start {
@@ -60,14 +79,26 @@ sub start {
     return $url if ($self->{hypervisor}->test_mode);
     
     # send the request with method specific json content
-    my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'START'}));
-    
+    my $response = $self->{hypervisor}->ua->put(  $url,
+                                                  Content => to_json(
+                                                    {
+                                                      status => 'START'
+                                                    }
+                                                  )
+                                                );
+
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        return $response->status_line;
+
+        $self->last ( $response->status_line );
+        return 0;
     }
 
-    return from_json($response->decoded_content);
+    my $start_info = from_json($response->decoded_content);
+
+    $self->last        ($start_info);
+    $self->start_cache ($start_info);
+    return              $start_info ;
 }
 
 sub stop {
@@ -78,14 +109,26 @@ sub stop {
     # POSSIBLE EXIT
     return $url if ($self->{hypervisor}->test_mode);
     
-    my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
+    my $response = $self->{hypervisor}->ua->put( $url,
+                                                 Content => to_json(
+                                                   {
+                                                     status => 'SHUTDOWN'
+                                                   }
+                                                 )
+                                               );
         
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        return $response->status_line;
+
+        $self->last ( $response->status_line );
+        return 0;
     }
 
-    return from_json($response->decoded_content);
+    my $stop_info = from_json($response->decoded_content);
+
+    $self->last       ($stop_info);
+    $self->stop_cache ($stop_info);
+    return             $stop_info ;
 }
 
 sub delete {
@@ -100,10 +143,16 @@ sub delete {
 
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        return $response->status_line;
+
+        $self->last ( $response->status_line );
+        return 0;
     }
 
-    return from_json($response->decoded_content);
+    my $delete_info = from_json($response->decoded_content);
+
+    $self->last       ($delete_info);
+    $self->stop_cache ($delete_info);
+    return             $delete_info ;
 }
 
 1;

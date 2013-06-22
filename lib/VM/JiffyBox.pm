@@ -18,7 +18,10 @@ has token       => (is => 'ro', isa => $def, required => 1);
 has ua          => (is => 'ro', isa => $def, default => sub {LWP::UserAgent->new()});
 
 has test_mode   => (is => 'rw');
-has answer      => (is => 'rw');
+
+# should always keep the last message from the server
+has last          => (is => 'rw');
+has details_cache => (is => 'rw');
 
 sub base_url {
     my $self = shift;
@@ -33,18 +36,20 @@ sub get_details {
     
     my $url = $self->base_url . '/jiffyBoxes';
     
-
-    # POSSIBLE EXIT
-    return $url if ($self->test_mode);
-    
     my $response = $self->ua->get($url);
 
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        return $response->status_line;
+        $self->last ($response->status_line);
+        return 0;
     }
 
-    return from_json($response->decoded_content);
+    my $details = from_json($response->decoded_content);
+
+    $self->last         ( $details );
+    $self->details_cache( $details );
+
+    return $details;
 }
 
 sub get_id_from_name {
@@ -52,9 +57,8 @@ sub get_id_from_name {
     my $box_name = shift || '';
     
     my $details = $self->get_details;
-    
-    # POSSIBLE EXIT
-    return $details if ($self->test_mode);
+
+    $self->last( $details );
     
     foreach my $box (values $details->{result}) {
         return $box->{id} if ($box->{name} eq $box_name);
@@ -81,28 +85,32 @@ sub create_vm {
     
     my $url = $self->base_url . '/jiffyBoxes';
     
-    # POSSIBLE EXIT
-    return $url if ($self->test_mode);
-    
-    my $response = $self->ua->post($url, Content => to_json({name => $name, planid => $plan_id, backupid => $backup_id}));
+    my $response = $self->ua->post( $url,
+                                    Content => to_json(
+                                      {
+                                        name     => $name,
+                                        planid   => $plan_id,
+                                        backupid => $backup_id,
+                                      }
+                                    )
+                                  );
 
     # POSSIBLE EXIT
     unless ($response->is_success) {
-        $self->answer ($response->status_line);
+        $self->last ($response->status_line);
         return 0;
     }
 
-    $self->answer ( from_json($response->decoded_content) );
+    $self->last ( from_json($response->decoded_content) );
 
+    # POSSIBLE EXIT
     # TODO: should check the array for more messages
-    if (exists $self->answer->{messages}->[0]->{type}
-                and
-        $self->answer->{messages}->[0]->{type} eq 'error'
-       ) {
+    if (exists $self->last->{messages}->[0]->{type}
+        and    $self->last->{messages}->[0]->{type} eq 'error') {
         return 0;
     }
 
-    my $box_id = $self->answer->{result}->{id};
+    my $box_id = $self->last->{result}->{id};
     my $box = VM::JiffyBox::Box->new(id => $box_id);
 
     # set the hypervisor of the VM

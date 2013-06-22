@@ -18,6 +18,7 @@ has token       => (is => 'ro', isa => $def, required => 1);
 has ua          => (is => 'ro', isa => $def, default => sub {LWP::UserAgent->new()});
 
 has test_mode   => (is => 'rw');
+has answer      => (is => 'rw');
 
 sub base_url {
     my $self = shift;
@@ -86,9 +87,26 @@ sub create_vm {
         my $response = $self->ua->post($url, Content => to_json({name => $name, planid => $plan_id, backupid => $backup_id}));
 
         if ($response->is_success) {
-            return from_json($response->decoded_content);
+            $self->answer ( from_json($response->decoded_content) );
+
+            # TODO: should check the array for more messages
+            if (exists $self->answer->{messages}->[0]->{type}
+                        and
+                $self->answer->{messages}->[0]->{type} eq 'error'
+               ) {
+                return 0;
+            }
+
+            my $box_id = $self->answer->{result}->{id};
+            my $box = VM::JiffyBox::Box->new(id => $box_id);
+
+            # set the hypervisor of the VM
+            $box->hypervisor($self);
+
+            return $box;
         } else {
-            return $response->status_line;
+            $self->answer = $response->status_line;
+            return 0;
         }
     }
 }

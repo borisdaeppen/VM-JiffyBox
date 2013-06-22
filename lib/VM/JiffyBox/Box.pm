@@ -16,17 +16,17 @@ sub get_backups {
     
     my $url = $self->{hypervisor}->base_url . '/backups/' . $self->id;
     
-    # EXIT
+    # POSSIBLE EXIT
     return $url if ($self->{hypervisor}->test_mode);
     
     my $response = $self->{hypervisor}->ua->get($url);
 
-    if ($response->is_success) {
-        return from_json($response->decoded_content);
-    }
-    else {
+    # POSSIBLE EXIT
+    unless ($response->is_success) {
         return $response->status_line;
     }
+
+    return from_json($response->decoded_content);
 }
 
 sub get_details {
@@ -35,19 +35,20 @@ sub get_details {
     # add method specific stuff to the URL
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
+    # POSSIBLE EXIT
     # return the URL if we are using test_mode
     return $url if ($self->{hypervisor}->test_mode);
     
     # send the request and return the response
     my $response = $self->{hypervisor}->ua->get($url);
 
-    if ($response->is_success) {
+    # POSSIBLE EXIT
+    unless ($response->is_success) {
         # change the json response to perl structure
-        return from_json($response->decoded_content);
-    }
-    else {
         return $response->status_line;
     }
+
+    return from_json($response->decoded_content);
 }
 
 sub start {
@@ -55,17 +56,18 @@ sub start {
     
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    # EXIT
+    # POSSIBLE EXIT
     return $url if ($self->{hypervisor}->test_mode);
     
     # send the request with method specific json content
     my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'START'}));
     
-    if ($response->is_success) {
-        return from_json($response->decoded_content);
-    } else {
+    # POSSIBLE EXIT
+    unless ($response->is_success) {
         return $response->status_line;
     }
+
+    return from_json($response->decoded_content);
 }
 
 sub stop {
@@ -73,16 +75,17 @@ sub stop {
     
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    # EXIT
+    # POSSIBLE EXIT
     return $url if ($self->{hypervisor}->test_mode);
     
     my $response = $self->{hypervisor}->ua->put($url, Content => to_json({status => 'SHUTDOWN'}));
         
-    if ($response->is_success) {
-        return from_json($response->decoded_content);
-    } else {
+    # POSSIBLE EXIT
+    unless ($response->is_success) {
         return $response->status_line;
     }
+
+    return from_json($response->decoded_content);
 }
 
 sub delete {
@@ -90,16 +93,17 @@ sub delete {
     
     my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     
-    # EXIT
+    # POSSIBLE EXIT
     return $url if ($self->{hypervisor}->test_mode);
     
     my $response = $self->{hypervisor}->ua->delete($url);    
 
-    if ($response->is_success) {
-        return from_json($response->decoded_content);
-    } else {
+    # POSSIBLE EXIT
+    unless ($response->is_success) {
         return $response->status_line;
     }
+
+    return from_json($response->decoded_content);
 }
 
 1;

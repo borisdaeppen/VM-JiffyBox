@@ -9,6 +9,7 @@ use VM::JiffyBox;
 
 my $auth_token = '';
 my $box_name   = '';
+my $clone_name = '';
 unless ($ARGV[0]) {
     say 'Token as first argument needed!';
     exit 1;
@@ -17,8 +18,13 @@ unless ($ARGV[1]) {
     say 'BoxName as second argument needed!';
     exit 1;
 }
+unless ($ARGV[2]) {
+    say 'CloneName as third argument needed!';
+    exit 1;
+}
 $auth_token = $ARGV[0];
 $box_name   = $ARGV[1];
+$clone_name = $ARGV[2];
 
 # prepare connection to VM-Server
 my $jiffy = VM::JiffyBox->new(token => $auth_token); 
@@ -39,7 +45,7 @@ say "backup_id: $backup_id";
 say "plan_id: $plan_id";
 
 # create a clone of the VM
-my $clone_box  = $jiffy->create_vm( "$box_name-B", $plan_id, $backup_id );
+my $clone_box  = $jiffy->create_vm( $clone_name, $plan_id, $backup_id );
 
 # abort if create failed
 unless ($clone_box) {

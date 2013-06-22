@@ -2,6 +2,14 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.006     2013-06-22 19:28:20 Europe/Berlin
+          (TRIAL) added a lot of methods (start, stop, create, etc)
+          http-useragent is now in hypervisor
+          added an example demonstrating usecase (create backup clone)
+          added caching functionality
+          always return 0 on failure
+          a lot of other small fixes
+
 0.005     2013-06-10 11:51:12 Europe/Berlin
           (TRIAL) Updated author email
           access setter correctly

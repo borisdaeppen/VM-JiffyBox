@@ -58,7 +58,7 @@ sub get_id_from_name {
 
     $self->last( $details );
     
-    foreach my $box (values $details->{result}) {
+    foreach my $box (values %{$details->{result}}) {
         return $box->{id} if ($box->{name} eq $box_name);
     }
 }

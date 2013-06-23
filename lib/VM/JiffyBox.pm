@@ -9,15 +9,13 @@ use LWP::UserAgent;
 
 use VM::JiffyBox::Box;
 
-my $def = sub {die unless $_[0]};
+has domain_name => (is => 'rw', default => sub {'https://api.jiffybox.de'});
+has version     => (is => 'rw', default => sub {'v1.0'});
+has token       => (is => 'rw', required => 1);
 
-has domain_name => (is => 'ro', isa => $def, default => sub {'https://api.jiffybox.de'});
-has version     => (is => 'ro', isa => $def, default => sub {'v1.0'});
-has token       => (is => 'ro', isa => $def, required => 1);
+has ua          => (is => 'rw', default => sub {LWP::UserAgent->new()});
 
-has ua          => (is => 'ro', isa => $def, default => sub {LWP::UserAgent->new()});
-
-has test_mode   => (is => 'rw');
+has test_mode   => (is => 'rw', default => sub {'0'});
 
 # should always keep the last message from the server
 has last          => (is => 'rw');
@@ -67,7 +65,7 @@ sub get_id_from_name {
 
 sub get_vm {
     my $self   = shift;
-    my $box_id = shift;
+    my $box_id = shift || die 'box_id needed';
 
     my $box = VM::JiffyBox::Box->new(id => $box_id);
 

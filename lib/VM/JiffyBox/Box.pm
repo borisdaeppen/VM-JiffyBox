@@ -6,9 +6,7 @@ use Moo;
 use JSON;
 use LWP::UserAgent; # needed?
 
-my $def = sub {die unless $_[0]};
-
-has id         => (is => 'ro', isa => $def);
+has id         => (is => 'rw', required => 1);
 has hypervisor => (is => 'rw');
 
 has last          => (is => 'rw');

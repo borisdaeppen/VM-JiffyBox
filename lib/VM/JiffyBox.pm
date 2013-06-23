@@ -126,9 +126,9 @@ __END__
 
 =head1 SYNOPSIS
 
- #############################
- # CREAT A CLONE FROM BACKUP #
- #############################
+ ##############################
+ # CREATE A CLONE FROM BACKUP #
+ ##############################
  
  # stuff we need to know our self
  my $auth_token = $ARGV[0];

@@ -50,7 +50,7 @@ my $clone_box  = $jiffy->create_vm( $clone_name, $plan_id, $backup_id );
 # abort if create failed
 unless ($clone_box) {
     # FAIL
-    die $jiffy->answer->{messages}->[0]->{message};
+    die $jiffy->last->{messages}->[0]->{message};
 }
 
 # wait for the clone to be ready

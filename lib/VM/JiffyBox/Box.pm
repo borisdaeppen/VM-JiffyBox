@@ -4,7 +4,6 @@ package VM::JiffyBox::Box;
 
 use Moo;
 use JSON;
-use LWP::UserAgent; # needed?
 
 has id         => (is => 'rw', required => 1);
 has hypervisor => (is => 'rw');

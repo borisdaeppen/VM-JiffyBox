@@ -2,6 +2,11 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.01      2013-06-24 14:01:56 Europe/Berlin
+          added example of getting IP to the docs
+          mentioned that this was made by an apprentice in the docs
+          delete unneeded use statement
+
 0.007     2013-06-23 14:57:45 Europe/Berlin
           (TRIAL) Trying to fix loads of CPAN-Tester-Errors:
            - use "values" in a ways that perl < 5.14 can deal with it

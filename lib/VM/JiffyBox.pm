@@ -247,3 +247,8 @@ So to use this module with success you should also B<read their API-Documentatio
 
 =back
 
+=head1 SPECIAL NOTES
+
+This software was developed together with an apprentice.
+This is mentioned here to show that this can lead to good modules and encourage programmers to give interesting work to those who are learning.
+

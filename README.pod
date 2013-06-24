@@ -2,5 +2,7 @@
 
 Perl API for JiffyBox
 
-B<STILL UNDER DEVELOPMENT!>
+Development: L<https://github.com/tim-schwarz/VM-JiffyBox>
+
+Packaged: L<https://metacpan.org/module/VM::JiffyBox>
 

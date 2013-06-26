@@ -78,7 +78,7 @@ sub get_vm {
 
 sub create_vm {
     my $self = shift;
-    my $args = @_;
+    my $args = {@_};
     
     die 'name needed' unless $args->{name};
     die 'planid needed' unless $args->{planid};
@@ -86,22 +86,22 @@ sub create_vm {
     
     my $url = $self->base_url . '/jiffyBoxes';
     
-    my %json = (
+    my $json = {
        name => $args->{name},
        planid => $args->{planid}
-    );
+    };
     
     if ($args->{backupid}) {
-       $json{backupid} = $args->{backupid};
+       $json->{backupid} = $args->{backupid};
     } else {
-       $json{distribution} = $args->{distribution};
+       $json->{distribution} = $args->{distribution};
     }
     
-    $json{password} = $args->{password} if $args->{password};
-    $json{use_sshkey} = $args->{use_sshkey} if $args->{use_sshkey};
-    $json{metadata} = $args->{metadata} if $args->{metadata};
+    $json->{password} = $args->{password} if $args->{password};
+    $json->{use_sshkey} = $args->{use_sshkey} if $args->{use_sshkey};
+    $json->{metadata} = $args->{metadata} if $args->{metadata};
     
-    my $response = $self->ua->post($url, Content => to_json(%json));
+    my $response = $self->ua->post($url, Content => to_json($json));
 
     # POSSIBLE EXIT
     unless ($response->is_success) {
@@ -109,7 +109,7 @@ sub create_vm {
         return 0;
     }
 
-    $self->last ( from_json($response->decoded_content) );
+    $self->last(from_json($response->decoded_content));
 
     # POSSIBLE EXIT
     # TODO: should check the array for more messages

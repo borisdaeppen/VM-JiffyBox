@@ -45,7 +45,11 @@ say "backup_id: $backup_id";
 say "plan_id: $plan_id";
 
 # create a clone of the VM
-my $clone_box  = $jiffy->create_vm( $clone_name, $plan_id, $backup_id );
+my $clone_box  = $jiffy->create_vm(
+    name => $clone_name,
+    planid => $plan_id,
+    backupid => $backup_id
+);
 
 # abort if create failed
 unless ($clone_box) {

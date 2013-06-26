@@ -18,10 +18,19 @@ unless ($ARGV[3]) {
 
 my $jiffy = VM::JiffyBox->new(token => $ARGV[0], test_mode => 1);
 
-my $url = $jiffy->create_vm($ARGV[1], $ARGV[2], $ARGV[3]);
+my $url = $jiffy->create_vm(
+    name => $ARGV[1],
+    planid => $ARGV[2],
+    backupid => $ARGV[3]
+);
 say "\n$url\n";
 
 $jiffy->test_mode(0);
 
-my $response = $jiffy->create_vm($ARGV[1], $ARGV[2], $ARGV[3]);
+my $response = $jiffy->create_vm(
+    name => $ARGV[1],
+    planid => $ARGV[2],
+    backupid => $ARGV[3]
+);
+
 print Dumper($response);

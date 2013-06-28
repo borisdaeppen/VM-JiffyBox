@@ -80,12 +80,15 @@ sub create_vm {
     my $self = shift;
     my $args = {@_};
 
-    die 'name needed' unless $args->{name};
-    die 'planid needed' unless $args->{planid};
-    die 'backupid or distribution needed' unless $args->{backupid} || $args->{distribution};
+    # POSSIBLE EXIT (DIE)
+    die 'name needed'                     unless $args->{name};
+    die 'planid needed'                   unless $args->{planid};
+    die 'backupid or distribution needed' unless $args->{backupid}
+                                              || $args->{distribution};
 
     my $url = $self->base_url . '/jiffyBoxes';
 
+    # transform args into JSON and pass them to API server
     my $response = $self->ua->post($url, Content => to_json($args));
 
     # POSSIBLE EXIT

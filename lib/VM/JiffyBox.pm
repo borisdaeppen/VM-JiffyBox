@@ -151,7 +151,10 @@ __END__
  say "plan_id: $plan_id";
  
  # create a clone of the VM
- my $clone_box  = $jiffy->create_vm( $clone_name, $plan_id, $backup_id );
+ my $clone_box  = $jiffy->create_vm( name     => $clone_name,
+                                     planid   => $plan_id,
+                                     backupid => $backup_id,
+                                   );
  
  # abort if create failed
  unless ($clone_box) {
@@ -208,25 +211,51 @@ Takes the ID for the virtual machine as first argument.
 =head2 create_vm
 
 Creates a new virtual machine and returns an object-ref to it (L<VM::JiffyBox::Box>).
-Takes 3 arguments:
+You can pass any named arguments as described by the official API from I<JiffyBox>, since they will be transformed directly to C<JSON> and sent to the API. This means, what is choosen as argument name, will be sent.
 
 =over
 
-=item 1
+=item name
 
-name: The name for the new VM.
+The name for the new VM.
+Needed.
 
-=item 2
+=item planid
 
-plan_id: The ID for pricing.
+The ID for pricing.
+Needed.
 
-=item 3
+=item backupid
 
-backup_id: Name of the backup-image to take.
+Name of the backup-image to take.
+Needed if you don't use C<distribution>.
+
+=item distribution
+
+OS for the VM.
+Needed if you don't use C<backupid>.
+
+=item password
+
+Please look up the official API-Docs for description.
+Optinal.
+
+=item use_sskey
+
+Please look up the official API-Docs for description.
+Optinal.
+
+=item metadata
+
+Please look up the official API-Docs for description.
+Optinal.
 
 =back
 
-B<Note:> This methods interface could change in future releases, since it does not yet cover full functionality.
+There may be more options.
+Please see the official documentation of I<JiffyBox>.
+
+B<Note:> This methods interface changed (as announced) and is not compatible with older releases of L<VM::JiffyBox>.
 
 =head1 SEE ALSO
 

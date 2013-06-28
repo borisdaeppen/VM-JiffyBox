@@ -6,7 +6,7 @@ use Moo;
 use JSON;
 
 has id         => (is => 'rw', required => 1);
-has hypervisor => (is => 'rw');
+has hypervisor => (is => 'rw', required => 1);
 
 has last          => (is => 'rw');
 has backup_cache  => (is => 'rw');
@@ -156,10 +156,7 @@ This module should be used together with L<VM::JiffyBox>.
 L<VM::JiffyBox> is the factory for producing objects of this module.
 However if you want to do it yourself:
 
- my $box = VM::JiffyBox::Box->new(id => $box_id);
-
- # set the hypervisor of the VM (e.g. ref to JiffyBox)
- $box->hypervisor($ref);
+ my $box = VM::JiffyBox::Box->new(id => $box_id, hypervisor => $ref);
 
 You then can do a lot of stuff with this box:
 
@@ -226,6 +223,28 @@ Contains information of the last call to delete().
 =back
 
 =head1 METHODS
+
+All methods (exluding C<new>) will return information about the request, instead of doing a call to the API if the hypervisor is in C<test_mode>.
+
+=head2 new
+
+Creates a box-object.
+Requires two paramters.
+
+=over
+
+=item id
+
+C<ID> of the box.
+Required.
+See the official documentation of I<JiffyBox> for more information.
+
+=item hypervisor
+
+An object reference to C<VM::JiffyBox>.
+Required.
+
+=back
 
 =head2 get_details
 

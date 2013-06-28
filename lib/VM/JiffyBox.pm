@@ -68,10 +68,7 @@ sub get_vm {
     my $self   = shift;
     my $box_id = shift || die 'box_id needed';
 
-    my $box = VM::JiffyBox::Box->new(id => $box_id);
-
-    # set the hypervisor of the VM
-    $box->hypervisor($self);
+    my $box = VM::JiffyBox::Box->new(id => $box_id, hypervisor => $self);
 
     return $box;
 }
@@ -256,6 +253,10 @@ There may be more options.
 Please see the official documentation of I<JiffyBox>.
 
 B<Note:> This methods interface changed (as announced) and is not compatible with older releases of L<VM::JiffyBox>.
+
+=head2 test_mode
+
+If set to any true value methods related to API-calls will just return information about the parameters it would have used to do the call.
 
 =head1 SEE ALSO
 

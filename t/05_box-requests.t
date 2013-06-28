@@ -35,7 +35,7 @@ my $hypervisor = VM::JiffyBox->new( token     => $auth_token,
 
 my $vm = $hypervisor->get_vm($box_id);
 
-my $fresh_url = $vm->get_details();
+my $fresh_url = $vm->get_details()->{url};
 
 $number_of_tests++;
 isnt ($fresh_url,
@@ -58,7 +58,7 @@ for my $method (keys %requests) {
 
     my $vm = $hypervisor->get_vm($box_id);
 
-    my $fresh_url = $vm->$method();
+    my $fresh_url = $vm->$method()->{url};
 
     $number_of_tests++;
     is ($fresh_url, $static_url, "URL for $method (non-historic)" );
@@ -80,7 +80,7 @@ for my $method (keys %requests) {
 
     my $static_url = $requests{$method};
 
-    my $fresh_url = $vm->$method();
+    my $fresh_url = $vm->$method()->{url};
 
     $number_of_tests++;
     is ($fresh_url, $static_url, "URL for $method (historic)");

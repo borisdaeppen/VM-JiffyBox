@@ -70,7 +70,7 @@ sub get_details {
 sub start {
     my $self = shift;
     
-    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
+    my $url  = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     my $json = to_json( { status => 'START' } );
     
     # POSSIBLE EXIT
@@ -97,7 +97,7 @@ sub start {
 sub stop {
     my $self = shift;
     
-    my $url = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
+    my $url  = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
     my $json = to_json( { status => 'SHUTDOWN' } );
     
     # POSSIBLE EXIT

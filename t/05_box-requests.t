@@ -6,21 +6,21 @@ my $number_of_tests = 0; # ne need to count them!
 
 use VM::JiffyBox;
 
-my $domain = 'https://api.jiffybox.de';
+my $domain     = 'https://api.jiffybox.de';
 my $auth_token = 'AUTH_TOKEN';
-my $version = 'v1.0';
+my $version    = 'v1.0';
 
-my $base_url = "$domain/$auth_token/$version";
+my $base_url   = "$domain/$auth_token/$version";
 
-my $box_id = 'BOX_ID';
+my $box_id     = 'BOX_ID';
 
 # here is a list of all the requests to check
 my %requests = (
                 get_backups => "$base_url/backups/$box_id",
                 get_details => "$base_url/jiffyBoxes/$box_id",
-                start => "$base_url/jiffyBoxes/$box_id",
-                stop => "$base_url/jiffyBoxes/$box_id",
-                delete => "$base_url/jiffyBoxes/$box_id",
+                start       => "$base_url/jiffyBoxes/$box_id",
+                stop        => "$base_url/jiffyBoxes/$box_id",
+                delete      => "$base_url/jiffyBoxes/$box_id",
                );
 
 ##############

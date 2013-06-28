@@ -79,29 +79,14 @@ sub get_vm {
 sub create_vm {
     my $self = shift;
     my $args = {@_};
-    
+
     die 'name needed' unless $args->{name};
     die 'planid needed' unless $args->{planid};
     die 'backupid or distribution needed' unless $args->{backupid} || $args->{distribution};
-    
+
     my $url = $self->base_url . '/jiffyBoxes';
-    
-    my $json = {
-       name => $args->{name},
-       planid => $args->{planid}
-    };
-    
-    if ($args->{backupid}) {
-       $json->{backupid} = $args->{backupid};
-    } else {
-       $json->{distribution} = $args->{distribution};
-    }
-    
-    $json->{password} = $args->{password} if $args->{password};
-    $json->{use_sshkey} = $args->{use_sshkey} if $args->{use_sshkey};
-    $json->{metadata} = $args->{metadata} if $args->{metadata};
-    
-    my $response = $self->ua->post($url, Content => to_json($json));
+
+    my $response = $self->ua->post($url, Content => to_json($args));
 
     # POSSIBLE EXIT
     unless ($response->is_success) {

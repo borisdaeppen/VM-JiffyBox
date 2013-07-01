@@ -81,7 +81,7 @@ sub create_vm {
     die 'name needed'                     unless $args->{name};
     die 'planid needed'                   unless $args->{planid};
     die 'backupid or distribution needed' unless $args->{backupid}
-                                              || $args->{distribution};
+                                             xor $args->{distribution};
 
     my $url = $self->base_url . '/jiffyBoxes';
 

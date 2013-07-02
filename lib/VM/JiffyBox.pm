@@ -184,7 +184,24 @@ So if you want to be sure, just use L<Data::Dumper> to print it.
 There are possibilities to take advantage of caching functionality.
 If you have once called get_details(), the results will be stored in the attribute C<details_cache>.
 
-=head1 METHODS
+=head1 METHODS (LOGIC)
+
+Methods that do not send API requests.
+They are just needed to prepare the requests internally, e.g. due to the OO-design.
+
+=head2 get_vm
+
+Returns an object-ref to an existing virtual machine (L<VM::JiffyBox::Box>).
+Takes the ID for the virtual machine as first argument.
+
+=head2 test_mode
+
+If set to any true value methods related to API-calls will just return information about the parameters it would have used to do the call.
+
+=head1 METHODS (API)
+
+Methods which are directly related to the official API.
+A call to such a method will directly lead to an API request to the server.
 
 =head2 get_details
 
@@ -193,22 +210,21 @@ Takes no arguments.
 
 Results are cached in C<details_cache>.
 
+=head2 create_vm
+
+Creates a new virtual machine and returns an object-ref to it (L<VM::JiffyBox::Box>).
+You can pass any named arguments as described by the official API from I<JiffyBox>, since they will be transformed directly to C<JSON> and sent to the API. This means, what is choosen as argument name, will be sent.
+
+=head1 METHODS (SHORTCUTS)
+
+Methods which are not part of the official API, but provide some often needed calls by using the API mentioned above.
+
 =head2 get_id_from_name
 
 Returns the ID for a specific virtual machine.
 Takes the name for the virtual machine as first argument.
 
 (Also updates the C<details_cache>)
-
-=head2 get_vm
-
-Returns an object-ref to an existing virtual machine (L<VM::JiffyBox::Box>).
-Takes the ID for the virtual machine as first argument.
-
-=head2 create_vm
-
-Creates a new virtual machine and returns an object-ref to it (L<VM::JiffyBox::Box>).
-You can pass any named arguments as described by the official API from I<JiffyBox>, since they will be transformed directly to C<JSON> and sent to the API. This means, what is choosen as argument name, will be sent.
 
 =over
 
@@ -253,10 +269,6 @@ There may be more options.
 Please see the official documentation of I<JiffyBox>.
 
 B<Note:> This methods interface changed (as announced) and is not compatible with older releases of L<VM::JiffyBox>.
-
-=head2 test_mode
-
-If set to any true value methods related to API-calls will just return information about the parameters it would have used to do the call.
 
 =head1 SEE ALSO
 

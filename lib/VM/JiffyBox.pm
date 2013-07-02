@@ -59,9 +59,13 @@ sub get_id_from_name {
     $self->last         ( $details );
     $self->details_cache( $details );
     
+    # look for a match in the results
     foreach my $box (values %{$details->{result}}) {
         return $box->{id} if ($box->{name} eq $box_name);
     }
+
+    # if we reach here, this means there was no match
+    return 0;
 }
 
 sub get_vm {
@@ -267,6 +271,7 @@ Methods which are not part of the official API, but provide some often needed ca
 
 Returns the ID for a specific virtual machine.
 Takes the name for the virtual machine as first argument.
+Returns C<0> if there was no match.
 
 (Also updates the C<details_cache>)
 

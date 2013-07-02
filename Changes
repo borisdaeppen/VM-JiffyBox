@@ -2,6 +2,12 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.021     2013-07-02 16:09:31 Europe/Berlin
+          fix serious bug in create_vm()
+          get_id_from_name() returns 0 on failure
+          get_id_from_name() dies if required argument not set
+          fix copy & paste error in documentation
+
 0.02      2013-07-02 13:00:03 Europe/Berlin
           BREAK BACKWARDS COMPATIBILITY:
            - create_vm() has now named arguments according to API-names

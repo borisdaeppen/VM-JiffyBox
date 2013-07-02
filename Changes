@@ -2,6 +2,13 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.02      2013-07-02 13:00:03 Europe/Berlin
+          BREAK BACKWARDS COMPATIBILITY:
+           - create_vm() has now named arguments according to API-names
+           - hypervisor must be given with new() for a box
+          more testing, now also checking for JSON
+          more documentation
+
 0.01      2013-06-24 14:01:56 Europe/Berlin
           added example of getting IP to the docs
           mentioned that this was made by an apprentice in the docs

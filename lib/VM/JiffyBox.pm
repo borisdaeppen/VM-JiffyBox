@@ -51,8 +51,8 @@ sub get_details {
 }
 
 sub get_id_from_name {
-    my $self = shift;
-    my $box_name = shift || '';
+    my $self     = shift;
+    my $box_name = shift || die 'box_name as argument needed';
     
     my $details = $self->get_details;
 

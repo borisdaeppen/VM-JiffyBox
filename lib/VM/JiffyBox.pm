@@ -215,17 +215,6 @@ Results are cached in C<details_cache>.
 Creates a new virtual machine and returns an object-ref to it (L<VM::JiffyBox::Box>).
 You can pass any named arguments as described by the official API from I<JiffyBox>, since they will be transformed directly to C<JSON> and sent to the API. This means, what is choosen as argument name, will be sent.
 
-=head1 METHODS (SHORTCUTS)
-
-Methods which are not part of the official API, but provide some often needed calls by using the API mentioned above.
-
-=head2 get_id_from_name
-
-Returns the ID for a specific virtual machine.
-Takes the name for the virtual machine as first argument.
-
-(Also updates the C<details_cache>)
-
 =over
 
 =item name
@@ -269,6 +258,17 @@ There may be more options.
 Please see the official documentation of I<JiffyBox>.
 
 B<Note:> This methods interface changed (as announced) and is not compatible with older releases of L<VM::JiffyBox>.
+
+=head1 METHODS (SHORTCUTS)
+
+Methods which are not part of the official API, but provide some often needed calls by using the API mentioned above.
+
+=head2 get_id_from_name
+
+Returns the ID for a specific virtual machine.
+Takes the name for the virtual machine as first argument.
+
+(Also updates the C<details_cache>)
 
 =head1 SEE ALSO
 

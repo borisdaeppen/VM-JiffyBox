@@ -108,10 +108,7 @@ sub create_vm {
     }
 
     my $box_id = $self->last->{result}->{id};
-    my $box = VM::JiffyBox::Box->new(id => $box_id);
-
-    # set the hypervisor of the VM
-    $box->hypervisor($self);
+    my $box = VM::JiffyBox::Box->new(id => $box_id, hypervisor => $self);
 
     return $box;
 }

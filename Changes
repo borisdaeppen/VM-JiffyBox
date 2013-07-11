@@ -2,6 +2,9 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.022     2013-07-11 21:34:44 Europe/Berlin
+          add LWP::Protocol::https as prereq
+
 0.021     2013-07-02 16:09:31 Europe/Berlin
           fix serious bug in create_vm()
           get_id_from_name() returns 0 on failure

@@ -2,6 +2,9 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.023     2013-08-20 16:38:11 Europe/Zurich
+          return zero in get_id_from_name() if detail-request failed
+
 0.022     2013-07-11 21:34:44 Europe/Berlin
           add LWP::Protocol::https as prereq
 

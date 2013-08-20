@@ -56,6 +56,9 @@ sub get_id_from_name {
     
     my $details = $self->get_details;
 
+    # EXIT if no details
+    return 0 unless $details;
+
     $self->last         ( $details );
     $self->details_cache( $details );
     

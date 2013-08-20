@@ -6,6 +6,7 @@ package VM::JiffyBox;
 use Moo;
 use JSON;
 use LWP::UserAgent;
+use Scalar::Util qw( reftype );
 
 use VM::JiffyBox::Box;
 
@@ -60,10 +61,20 @@ sub get_id_from_name {
     return 0 unless $details;
 
     $self->last         ( $details );
+
+    # EXIT if no expected result
+    return 0 unless (reftype $details eq 'HASH');
+    return 0 unless (exists $details->{result});
+    return 0 unless (reftype $details->{result} eq 'HASH');
+
     $self->details_cache( $details );
     
     # look for a match in the results
     foreach my $box (values %{$details->{result}}) {
+
+        # EXIT if no expected result
+        return 0 unless (reftype $box eq 'HASH');
+
         return $box->{id} if ($box->{name} eq $box_name);
     }
 

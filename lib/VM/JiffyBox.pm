@@ -3,6 +3,9 @@ package VM::JiffyBox;
 # The line below is recognised by Dist::Zilla and taken for CPAN packaging
 # ABSTRACT: OO-API for JiffyBox Virtual Machine
 
+use strict;
+use warnings;
+
 use Moo;
 use JSON;
 use LWP::UserAgent;

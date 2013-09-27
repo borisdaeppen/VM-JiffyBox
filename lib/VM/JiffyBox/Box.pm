@@ -2,6 +2,9 @@ package VM::JiffyBox::Box;
 
 # ABSTRACT: Representation of a Virtual Machine in JiffyBox
 
+use strict;
+use warnings;
+
 use Moo;
 use JSON;
 

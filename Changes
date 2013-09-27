@@ -2,6 +2,10 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.025     2013-09-27 15:26:58 Europe/Zurich
+          added strict and warnings, since Moo doesn't provide them
+          both modules pass now Perl::Critic on gentle level
+
 0.024     2013-08-27 15:24:18 Europe/Zurich
           replace "return 0" with "return", thx RENEEB for the hint
 

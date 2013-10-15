@@ -291,6 +291,8 @@ Returns C<0> if there was no match.
 
 =head1 SEE ALSO
 
+This is a software library for the I<perl programming language>.
+
 =over
 
 =item *

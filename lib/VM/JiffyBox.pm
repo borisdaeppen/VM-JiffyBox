@@ -130,6 +130,54 @@ sub create_vm {
     return $box;
 }
 
+sub distributions {
+    my ($self) = shift;
+
+    my $url      = $self->base_url . '/distributions';
+    my $response = $self->ua->get( $url );
+
+    unless ( $response->is_success ) {
+        $self->last ($response->status_line);
+        return;
+    }
+
+    $self->last( from_json( $response->decoded_content ) );
+
+    return $self->last;
+}
+
+sub plans {
+    my ($self) = shift;
+
+    my $url      = $self->base_url . '/plans';
+    my $response = $self->ua->get( $url );
+
+    unless ( $response->is_success ) {
+        $self->last ($response->status_line);
+        return;
+    }
+
+    $self->last( from_json( $response->decoded_content ) );
+
+    return $self->last;
+}
+
+sub plan_details {
+    my ($self, $id_or_name) = @_;
+
+    my $url      = $self->base_url . '/plans/' . $id_or_name;
+    my $response = $self->ua->get( $url );
+
+    unless ( $response->is_success ) {
+        $self->last ($response->status_line);
+        return;
+    }
+
+    $self->last( from_json( $response->decoded_content ) );
+
+    return $self->last;
+}
+
 1;
 
 __END__

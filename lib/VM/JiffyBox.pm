@@ -130,7 +130,7 @@ sub create_vm {
     return $box;
 }
 
-sub distributions {
+sub get_distributions {
     my ($self) = shift;
 
     my $url      = $self->base_url . '/distributions';
@@ -146,7 +146,7 @@ sub distributions {
     return $self->last;
 }
 
-sub plans {
+sub get_plans {
     my ($self) = shift;
 
     my $url      = $self->base_url . '/plans';
@@ -162,7 +162,7 @@ sub plans {
     return $self->last;
 }
 
-sub plan_details {
+sub get_plan_details {
     my ($self, $id_or_name) = @_;
 
     my $url      = $self->base_url . '/plans/' . $id_or_name;
@@ -323,18 +323,18 @@ Optinal.
 There may be more options.
 Please see the official documentation of I<JiffyBox>.
 
-=head2 distributions
+=head2 get_distributions
 
 Get information about available distribution images for the virtual machines.
 Returns a hashref.
 
-=head2 plans
+=head2 get_plans
 
 Get information about existing plans (pricing).
 Takes no arguments.
 Returns a hashref.
 
-=head2 plan_details
+=head2 get_plan_details
 
 Returns details for a plan-id or name (pricing model).
 Pass name or ID as an argument to the method.

@@ -10,7 +10,7 @@ unless ($ARGV[0]) {
 }
 
 my $jiffy = VM::JiffyBox->new(token => $ARGV[0]);
-my $dists = $jiffy->distributions;
+my $dists = $jiffy->get_distributions;
 
 print Dumper $dists;
 

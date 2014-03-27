@@ -13,10 +13,10 @@ my $jiffy = VM::JiffyBox->new(token => $ARGV[0]);
 my $dists;
 
 if ( $ARGV[1] ) {
-    $dists = $jiffy->plan_details( $ARGV[1] );
+    $dists = $jiffy->get_plan_details( $ARGV[1] );
 }
 else {
-    $dists = $jiffy->plans;
+    $dists = $jiffy->get_plans;
 }
 
 print Dumper $dists;

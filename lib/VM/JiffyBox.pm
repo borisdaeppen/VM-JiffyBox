@@ -323,7 +323,22 @@ Optinal.
 There may be more options.
 Please see the official documentation of I<JiffyBox>.
 
-B<Note:> This methods interface changed (as announced) and is not compatible with older releases of L<VM::JiffyBox>.
+=head2 distributions
+
+Get information about available distribution images for the virtual machines.
+Returns a hashref.
+
+=head2 plans
+
+Get information about existing plans (pricing).
+Takes no arguments.
+Returns a hashref.
+
+=head2 plan_details
+
+Returns details for a plan-id or name (pricing model).
+Pass name or ID as an argument to the method.
+Returns a hashref.
 
 =head1 METHODS (SHORTCUTS)
 

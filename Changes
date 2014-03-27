@@ -1,6 +1,8 @@
 Revision history for VM-JiffyBox
  
 {{$NEXT}}
+          added methods distributions, plans and plan_details (RENEEB)
+          deleted old note about backwards compatibility
 
 0.026     2013-10-15 11:22:19 Europe/Zurich
           added keyword "perl programming language" to the docs

@@ -8,8 +8,9 @@ use warnings;
 use Moo;
 use JSON;
 
-has id         => (is => 'rw', required => 1);
-has hypervisor => (is => 'rw', required => 1);
+has id         => (is => 'ro', required => 1);
+has hypervisor => (is => 'ro', required => 1);
+has name       => (is => 'rwp');
 
 has last          => (is => 'rw');
 has backup_cache  => (is => 'rw');
@@ -17,6 +18,8 @@ has details_cache => (is => 'rw');
 has start_cache   => (is => 'rw');
 has stop_cache    => (is => 'rw');
 has delete_cache  => (is => 'rw');
+has freeze_cache  => (is => 'rw');
+has thaw_cache    => (is => 'rw');
 
 sub get_backups {
     my $self = shift;
@@ -70,11 +73,55 @@ sub get_details {
     return                $details ;
 }
 
-sub start {
+sub clone {
     my $self = shift;
+    my $args = shift;
+    
+    # POSSIBLE EXIT (DIE)
+    die 'name needed'                     unless $args->{name};
+    die 'planid needed'                   unless $args->{planid};
+
+    my $url  = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
+    my $json = to_json( {
+        name     => $args->{name},
+        planid   => $args->{planid},
+        metadata => $args->{metadata} || {},
+    });
+
+    # POSSIBLE EXIT
+    return { url => $url, json => $json }
+        if ($self->{hypervisor}->test_mode);
+    
+    # send the request with method specific json content
+    my $response = $self->{hypervisor}->ua->post( $url, Content => $json ); 
+
+    # POSSIBLE EXIT
+    unless ($response->is_success) {
+
+        $self->last ( $response->status_line );
+        return;
+    }
+
+    my $clone_info = from_json($response->decoded_content);
+
+    my $clone_box = __PACKAGE__->new(
+        id         => $clone_info->{result}->{id},
+        name       => $args->{name},
+        hypervisor => $self,
+    );
+
+    return $clone_box;
+}
+
+sub _status_action {
+    my $self   = shift;
+    my $action = shift;
+
+    my $status = uc $action;
+    $status    = 'SHUTDOWN' if 'stop' eq lc $action;
     
     my $url  = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
-    my $json = to_json( { status => 'START' } );
+    my $json = to_json( { status => $status } );
     
     # POSSIBLE EXIT
     return { url => $url, json => $json }
@@ -90,37 +137,36 @@ sub start {
         return;
     }
 
-    my $start_info = from_json($response->decoded_content);
+    my $status_info = from_json($response->decoded_content);
 
-    $self->last        ($start_info);
-    $self->start_cache ($start_info);
-    return              $start_info ;
+    my $cache_sub = $self->can( $action . '_cache' );
+    $self->last ($status_info);
+    $cache_sub->($status_info) if $cache_sub;
+    return       $status_info ;
+}
+
+sub freeze {
+    my $self = shift;
+
+    return $self->_status_action( 'freeze' );
+}
+
+sub thaw {
+    my $self = shift;
+
+    return $self->_status_action( 'start' );
+}
+
+sub start {
+    my $self = shift;
+
+    return $self->_status_action( 'start' );
 }
 
 sub stop {
     my $self = shift;
-    
-    my $url  = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
-    my $json = to_json( { status => 'SHUTDOWN' } );
-    
-    # POSSIBLE EXIT
-    return { url => $url, json => $json }
-        if ($self->{hypervisor}->test_mode);
-    
-    my $response = $self->{hypervisor}->ua->put( $url, Content => $json ); 
 
-    # POSSIBLE EXIT
-    unless ($response->is_success) {
-
-        $self->last ( $response->status_line );
-        return;
-    }
-
-    my $stop_info = from_json($response->decoded_content);
-
-    $self->last       ($stop_info);
-    $self->stop_cache ($stop_info);
-    return             $stop_info ;
+    return $self->_status_action( 'stop' );
 }
 
 sub delete {
@@ -142,9 +188,9 @@ sub delete {
 
     my $delete_info = from_json($response->decoded_content);
 
-    $self->last       ($delete_info);
-    $self->stop_cache ($delete_info);
-    return             $delete_info ;
+    $self->last         ($delete_info);
+    $self->delete_cache ($delete_info);
+    return               $delete_info ;
 }
 
 1;
@@ -259,6 +305,10 @@ Takes no arguments.
 Returns hashref with information about the backups of the virtual machine.
 Takes no arguments.
 
+=head2 clone
+
+Clones a virtual machine. Needs a C<name> and a C<planid>.
+
 =head2 start
 
 Starts a virtual machine.
@@ -267,6 +317,14 @@ It must be ensured (by you) that the machine has the state C<READY> before calli
 =head2 stop
 
 Stop a virtual machine.
+
+=head2 freeze
+
+freeze a virtual machine.
+
+=head2 thaw
+
+Thaw a virtual machine.
 
 =head2 delete
 

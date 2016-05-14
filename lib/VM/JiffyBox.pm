@@ -125,9 +125,43 @@ sub create_vm {
     }
 
     my $box_id = $self->last->{result}->{id};
-    my $box = VM::JiffyBox::Box->new(id => $box_id, hypervisor => $self);
+    my $box = VM::JiffyBox::Box->new(id => $box_id, hypervisor => $self, name => $args->{name});
 
     return $box;
+}
+
+sub get_vms {
+    my ($self) = shift;
+
+    my $url      = $self->base_url . '/jiffyBoxes';
+    my $response = $self->ua->get( $url );
+
+    unless ( $response->is_success ) {
+        $self->last ($response->status_line);
+        return;
+    }
+
+    $self->last( from_json( $response->decoded_content ) );
+
+    if (exists $self->last->{messages}->[0]->{type}
+        and    $self->last->{messages}->[0]->{type} eq 'error') {
+        return;
+    }
+
+    my @boxes;
+
+    my $result = $self->last->{result};
+    for my $box_id ( keys %{ $result || {} } ) {
+        my $name = $result->{$box_id}->{name};
+
+        push @boxes, VM::JiffyBox::Box->new(
+            id         => $box_id,
+            name       => $name,
+            hypervisor => $self,
+        );
+    }
+
+    return @boxes;
 }
 
 sub get_distributions {

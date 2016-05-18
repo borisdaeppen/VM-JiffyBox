@@ -154,7 +154,7 @@ sub freeze {
 sub thaw {
     my $self = shift;
 
-    return $self->_status_action( 'start' );
+    return $self->_status_action( 'thaw' );
 }
 
 sub start {
@@ -269,6 +269,14 @@ Contains information of the last call to stop().
 
 Contains information of the last call to delete().
 
+=item freeze_cache
+
+Contains information of the last call to freeze().
+
+=item thaw_cache
+
+Contains information of the last call to thaw().
+
 =back
 
 =head1 METHODS
@@ -278,7 +286,7 @@ All methods (exluding C<new>) will return information about the request, instead
 =head2 new
 
 Creates a box-object.
-Requires two paramters.
+Requires two parameters.
 
 =over
 
@@ -295,6 +303,16 @@ Required.
 
 =back
 
+Optional parameters
+
+=over 4
+
+=item * name
+
+Name of the box
+
+=back
+
 =head2 get_details
 
 Returns hashref with information about the virtual machine.
@@ -307,7 +325,12 @@ Takes no arguments.
 
 =head2 clone
 
-Clones a virtual machine. Needs a C<name> and a C<planid>.
+Clones a virtual machine. Needs a C<name> and a C<planid>. Returns a C<VM::JiffyBox::Box> object.
+
+  my $clone = $box->clone(
+      name   => 'Clonename',
+      planid => 22,
+  );
 
 =head2 start
 
@@ -318,13 +341,19 @@ It must be ensured (by you) that the machine has the state C<READY> before calli
 
 Stop a virtual machine.
 
+  $box->stop();
+
 =head2 freeze
 
 freeze a virtual machine.
 
+  $box->freeze();
+
 =head2 thaw
 
 Thaw a virtual machine.
+
+  $box->thaw();
 
 =head2 delete
 

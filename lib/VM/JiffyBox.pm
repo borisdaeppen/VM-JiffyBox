@@ -374,6 +374,16 @@ Returns details for a plan-id or name (pricing model).
 Pass name or ID as an argument to the method.
 Returns a hashref.
 
+=head2 get_vms
+
+Returns a list of C<VM::JiffyBox::Box> objects, where each object
+represents an existing box.
+
+  my @boxes = $jb->get_vms();
+  for my $box ( @boxes ) {
+      print $box->name, "\n";
+  }
+
 =head1 METHODS (SHORTCUTS)
 
 Methods which are not part of the official API, but provide some often needed calls by using the API mentioned above.

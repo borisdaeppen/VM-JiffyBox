@@ -404,7 +404,7 @@ This is a software library for the I<perl programming language>.
 
 =item *
 
-Source, contributions, patches: L<https://github.com/tim-schwarz/VM-JiffyBox>
+Source, contributions, patches: L<https://github.com/borisdaeppen/VM-JiffyBox>
 
 =item *
 

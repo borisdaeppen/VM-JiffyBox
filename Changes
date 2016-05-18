@@ -2,6 +2,10 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.031     2016-05-18 21:17:23+02:00 Europe/Zurich
+          added contributors to doc (RENEEB)
+          updated upstream info / repo (RENEEB)
+
 0.03      2016-05-18 18:37:20+02:00 Europe/Zurich (TRIAL RELEASE)
           added get_vms() to VM::JiffyBox (RENEEB)
           added thaw() and freeze() to VM::JiffyBox::Box (RENEEB)

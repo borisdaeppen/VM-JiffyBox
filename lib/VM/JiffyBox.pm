@@ -404,7 +404,7 @@ This is a software library for the I<perl programming language>.
 
 =item *
 
-Source, contributions, patches: L<https://github.com/tim-schwarz/VM-JiffyBox>
+Source, contributions, patches: L<https://github.com/borisdaeppen/VM-JiffyBox>
 
 =item *
 
@@ -418,4 +418,16 @@ So to use this module with success you should also B<read their API-Documentatio
 
 This software was developed together with an apprentice.
 This is mentioned here to show that this can lead to good modules and encourage programmers to give interesting work to those who are learning.
+
+=head1 CONTRIBUTORS
+
+=over 4
+
+=item * Boris Däppen
+
+=item * Renée Bäcker
+
+=item * Tim Schwarz
+
+=back
 

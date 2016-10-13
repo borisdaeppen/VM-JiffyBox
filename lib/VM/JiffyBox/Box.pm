@@ -116,12 +116,20 @@ sub clone {
 sub _status_action {
     my $self   = shift;
     my $action = shift;
+    my $params = shift;
+
+    return if !$action;
 
     my $status = uc $action;
     $status    = 'SHUTDOWN' if 'stop' eq lc $action;
+
+    my %opts;
+    if ( $status eq 'THAW' ) {
+        $opts{planid} = $params->{planid};
+    }
     
     my $url  = $self->{hypervisor}->base_url . '/jiffyBoxes/' . $self->id;
-    my $json = to_json( { status => $status } );
+    my $json = to_json( { %opts, status => $status } );
     
     # POSSIBLE EXIT
     return { url => $url, json => $json }
@@ -154,7 +162,7 @@ sub freeze {
 sub thaw {
     my $self = shift;
 
-    return $self->_status_action( 'thaw' );
+    return $self->_status_action( 'thaw', shift );
 }
 
 sub start {
@@ -197,7 +205,7 @@ sub delete {
 
 __END__
 
-=encoding utf8
+=encoding utf-8
 
 =head1 SYNOPSIS
 
@@ -353,7 +361,9 @@ freeze a virtual machine.
 
 Thaw a virtual machine.
 
-  $box->thaw();
+  $box->thaw({
+      planid => 22,
+  });
 
 =head2 delete
 

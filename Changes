@@ -2,6 +2,9 @@ Revision history for VM-JiffyBox
  
 {{$NEXT}}
 
+0.032     2016-10-16 14:50:27+02:00 Europe/Zurich
+          add option planid for 'thaw' (RENEEB)
+
 0.031     2016-05-18 21:17:23+02:00 Europe/Zurich
           added contributors to doc (RENEEB)
           updated upstream info / repo (RENEEB)
